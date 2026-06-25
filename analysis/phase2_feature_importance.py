@@ -141,7 +141,7 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase2_gain_importance.png'), dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase2_gain_importance.png")
+    print(f"\nOK: Saved: phase2_gain_importance.png")
     plt.close()
 
     # ===== VISUALIZATION 2: Model Comparison =====
@@ -163,7 +163,7 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase2_model_comparison.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase2_model_comparison.png")
+    print(f"OK: Saved: phase2_model_comparison.png")
     plt.close()
 
     # ===== PERMUTATION IMPORTANCE =====
@@ -217,7 +217,7 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase2_permutation_importance.png'),
                dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase2_permutation_importance.png")
+    print(f"\nOK: Saved: phase2_permutation_importance.png")
     plt.close()
 
     # ===== FEATURE CORRELATION HEATMAP =====
@@ -244,7 +244,7 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase2_correlation_heatmap.png'),
                dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase2_correlation_heatmap.png")
+    print(f"OK: Saved: phase2_correlation_heatmap.png")
     plt.close()
 
     # ===== REDUNDANCY DETECTION =====

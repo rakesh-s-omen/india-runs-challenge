@@ -211,6 +211,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     X_pred_scaled = scaler.transform(X_pred_selected)
 
     y_proba = ensemble.predict_proba(X_pred_scaled)
-    weighted_scores = np.sum(y_proba * np.array([0, 1, 2, 3]), axis=1)
+    weighted_scores = np.sum(y_proba * np.array([0, 1, 2, 3]), axis=1) / 3.0
 
     return weighted_scores, metadata

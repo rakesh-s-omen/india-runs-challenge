@@ -156,7 +156,7 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase4_model_comparison.png'),
                dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase4_model_comparison.png")
+    print(f"\nOK: Saved: phase4_model_comparison.png")
     plt.close()
 
     # ===== PART B: FEATURE GROUP ANALYSIS =====
@@ -309,7 +309,7 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase4_feature_groups.png'),
                dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase4_feature_groups.png")
+    print(f"\nOK: Saved: phase4_feature_groups.png")
     plt.close()
 
     # ===== ABLATION SUMMARY =====

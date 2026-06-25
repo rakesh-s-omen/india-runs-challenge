@@ -188,10 +188,10 @@ def train_and_predict(labeled_data_path, feature_matrix, feature_names):
         print(f"  Fold {fold}: Acc={acc:.4f} | Prec={prec:.4f} | Rec={rec:.4f} | F1={f1:.4f}")
 
     print(f"\nCross-Validation Results (5-Fold Stratified):")
-    print(f"  Accuracy:       {np.mean(cv_metrics['accuracy']):.4f} (±{np.std(cv_metrics['accuracy']):.4f})")
-    print(f"  Precision:      {np.mean(cv_metrics['precision_macro']):.4f} (±{np.std(cv_metrics['precision_macro']):.4f})")
-    print(f"  Recall:         {np.mean(cv_metrics['recall_macro']):.4f} (±{np.std(cv_metrics['recall_macro']):.4f})")
-    print(f"  F1-Score:       {np.mean(cv_metrics['f1_macro']):.4f} (±{np.std(cv_metrics['f1_macro']):.4f})")
+    print(f"  Accuracy:       {np.mean(cv_metrics['accuracy']):.4f} (+-{np.std(cv_metrics['accuracy']):.4f})")
+    print(f"  Precision:      {np.mean(cv_metrics['precision_macro']):.4f} (+-{np.std(cv_metrics['precision_macro']):.4f})")
+    print(f"  Recall:         {np.mean(cv_metrics['recall_macro']):.4f} (+-{np.std(cv_metrics['recall_macro']):.4f})")
+    print(f"  F1-Score:       {np.mean(cv_metrics['f1_macro']):.4f} (+-{np.std(cv_metrics['f1_macro']):.4f})")
 
     # STEP 5: Train final ensemble on all data
     print(f"\n[5] TRAINING FINAL ENSEMBLE")
@@ -318,7 +318,7 @@ def train_and_predict(labeled_data_path, feature_matrix, feature_names):
 
     # Get probability predictions for better ranking
     y_proba = final_ensemble.predict_proba(X_pred_scaled)
-    weighted_scores = np.sum(y_proba * np.array([0, 1, 2, 3]), axis=1)
+    weighted_scores = np.sum(y_proba * np.array([0, 1, 2, 3]), axis=1) / 3.0
 
     print(f"Generated {len(weighted_scores)} predictions")
     print(f"Score range: [{np.min(weighted_scores):.4f}, {np.max(weighted_scores):.4f}]")

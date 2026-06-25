@@ -32,7 +32,7 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
         'fix_implemented': 'SMOTE now applied INSIDE each CV fold only',
         'proof': 'stage3_ranking_validated.py applies SMOTE after train/val/test split',
         'impact': 'Prevents data leakage, provides honest CV accuracy estimates',
-        'status': 'FIXED ✓'
+        'status': 'FIXED [OK]'
     }
     print(report['sections']['data_leakage']['issue'])
     print(f"Status: {report['sections']['data_leakage']['status']}")
@@ -48,7 +48,7 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'test_samples': split_data.get('test_samples', 0),
             'stratification': 'StratifiedKFold ensures class distribution preserved',
             'unseen_test_set': 'Test set is completely unseen during training/validation',
-            'status': 'VALIDATED ✓'
+            'status': 'VALIDATED [OK]'
         }
         print(f"Train: {split_data.get('train_samples')} | Val: {split_data.get('val_samples')} | Test: {split_data.get('test_samples')}")
     else:
@@ -74,7 +74,7 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'accuracies': curves.get('accuracies', []),
             'plateaus': plateaus,
             'interpretation': '498 samples is SUFFICIENT - curve plateaus, not increasing',
-            'status': 'VALIDATED ✓' if plateaus else 'NEEDS MORE DATA'
+            'status': 'VALIDATED [OK]' if plateaus else 'NEEDS MORE DATA'
         }
     else:
         report['sections']['learning_curves'] = {
@@ -106,13 +106,13 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
         for model, scores in individuals.items():
             mean = scores.get('mean', 0)
             std = scores.get('std', 0)
-            print(f"  {model:25s}: {mean:.4f} (±{std:.4f})")
+            print(f"  {model:25s}: {mean:.4f} (+-{std:.4f})")
 
         improvements = ablation.get('ensemble_vs_individual', {})
         report['sections']['ablation'] = {
             'individual_models': individuals,
             'ensemble_improvements': improvements,
-            'status': 'ENSEMBLE IS SUPERIOR ✓'
+            'status': 'ENSEMBLE IS SUPERIOR [OK]'
         }
     else:
         report['sections']['ablation'] = {
@@ -195,14 +195,14 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
     print("="*100)
 
     issues_fixed = [
-        "1. ✓ Data Leakage: SMOTE moved inside CV folds",
-        "2. ✓ Proper CV: Stratified K-Fold with train/val/test split",
-        "3. ✓ Learning Curves: Dataset sufficiency proof",
-        "4. ✓ Ranking Metrics: NDCG, MAP, Precision@K for Top 100",
-        "5. ✓ Ablation Study: Ensemble superiority validated",
-        "6. ✓ Honeypot Detection: Validated with metrics",
-        "7. ✓ Feature Selection: 78 features justified via SelectKBest",
-        "8. ✓ External Validation: Unseen test set (15% holdout)"
+        "1. OK: Data Leakage: SMOTE moved inside CV folds",
+        "2. OK: Proper CV: Stratified K-Fold with train/val/test split",
+        "3. OK: Learning Curves: Dataset sufficiency proof",
+        "4. OK: Ranking Metrics: NDCG, MAP, Precision@K for Top 100",
+        "5. OK: Ablation Study: Ensemble superiority validated",
+        "6. OK: Honeypot Detection: Validated with metrics",
+        "7. OK: Feature Selection: 78 features justified via SelectKBest",
+        "8. OK: External Validation: Unseen test set (15% holdout)"
     ]
 
     for issue in issues_fixed:
@@ -214,7 +214,7 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
     with open(os.path.join(output_dir, 'COMPREHENSIVE_REPORT.json'), 'w') as f:
         json.dump(report, f, indent=2)
 
-    print(f"\n✓ Comprehensive report saved to {output_dir}/COMPREHENSIVE_REPORT.json")
+    print(f"\nOK: Comprehensive report saved to {output_dir}/COMPREHENSIVE_REPORT.json")
     print("="*100 + "\n")
 
     return report

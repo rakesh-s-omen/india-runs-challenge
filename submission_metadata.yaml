@@ -1,15 +1,15 @@
-# Redrob Hackathon — Submission Metadata
-# Save this file to your repo root as `submission_metadata.yaml` and fill in any specific contact details.
+# Redrob Hackathon - Submission Metadata
+
 
 # ============================================================================
 # Team identity
 # ============================================================================
-team_name: "RETRO"  # Replace with your actual team name
+team_name: "RETRO"
 
 primary_contact:
   name: "Rakesh S"
-  email: "rakeshsakthi253@gmail.com"     # Replace with your actual email
-  phone: "+91-7010582378"                 # Replace with your phone number
+  email: "rakeshsakthi253@gmail.com"
+  phone: "+91-7010582378"
 
 team_members:
   - name: "Rakesh S"
@@ -25,8 +25,8 @@ team_members:
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/rakesh-s-omen/india-runs-challenge" # Replace with your GitHub repo URL
-sandbox_link: "https://huggingface.co/spaces/rakeshhhhhhhh/India_runs_challenge_RETRO" # Replace with your HF Space link
+github_repo: "https://github.com/rakesh-s-omen/india-runs-challenge"
+sandbox_link: "https://huggingface.co/spaces/rakeshhhhhhhh/India_runs_challenge_RETRO"
 
 reproduce_command: "python -m src.main data/candidates.jsonl output/submission.csv"
 

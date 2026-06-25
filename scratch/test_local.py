@@ -16,7 +16,7 @@ def main():
         return
         
     print("==================================================")
-    print("🚀 RUNNING LOCAL END-TO-END PIPELINE TEST")
+    print(" RUNNING LOCAL END-TO-END PIPELINE TEST")
     print("==================================================")
     
     start = time.time()
@@ -29,16 +29,16 @@ def main():
     
     print("\n==================================================")
     if result.returncode == 0:
-        print(f"✅ SUCCESS! Pipeline completed.")
-        print(f"⏱️ Runtime: {duration:.2f} seconds.")
+        print(f"OK: SUCCESS! Pipeline completed.")
+        print(f" Runtime: {duration:.2f} seconds.")
         if duration > 300:
-            print("⚠️ WARNING: Runtime exceeded 5 minutes (300s). You will be disqualified in the sandbox!")
+            print("WARNING: WARNING: Runtime exceeded 5 minutes (300s). You will be disqualified in the sandbox!")
         else:
-            print("✅ Runtime is well within the 5-minute sandbox limit.")
+            print("OK: Runtime is well within the 5-minute sandbox limit.")
             
-        print(f"📂 Output saved to: {out_path}")
+        print(f" Output saved to: {out_path}")
     else:
-        print(f"❌ FAILED! Pipeline crashed with exit code {result.returncode}.")
+        print(f"ERROR: FAILED! Pipeline crashed with exit code {result.returncode}.")
         print("Check the logs above for errors.")
     print("==================================================")
 

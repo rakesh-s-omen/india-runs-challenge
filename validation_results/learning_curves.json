@@ -23,5 +23,5 @@
     0.024968682106668586,
     0.02578410255561239
   ],
-  "interpretation": "If accuracies plateau \u2192 dataset is sufficient. If still increasing \u2192 need more data."
+  "interpretation": "If accuracies plateau -> dataset is sufficient. If still increasing -> need more data."
 }

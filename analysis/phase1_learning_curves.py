@@ -188,7 +188,7 @@ def create_learning_curves(X, y, feature_names, output_dir='analysis_results'):
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase1_learning_curves.png'), dpi=300, bbox_inches='tight')
-    print(f"\n✓ Plot saved: phase1_learning_curves.png")
+    print(f"\nOK: Plot saved: phase1_learning_curves.png")
     plt.close()
 
     # Analysis
@@ -220,40 +220,40 @@ def create_learning_curves(X, y, feature_names, output_dir='analysis_results'):
         'is_overfitting': overfit_gap > 0.05,
     }
 
-    print(f"\n  Total improvement (20% → 100%):     {analysis['total_improvement']:.4f}")
+    print(f"\n  Total improvement (20% -> 100%):     {analysis['total_improvement']:.4f}")
     print(f"  Overfit gap (Train - Val):          {analysis['overfit_gap']:.4f}")
     print(f"  Final Validation Accuracy:          {analysis['final_validation_accuracy']:.4f}")
     print(f"  Final Macro F1:                     {analysis['final_macro_f1']:.4f}")
-    print(f"  Avg improvement (80% → 100%):       {analysis['avg_last_improvement']:.4f}")
+    print(f"  Avg improvement (80% -> 100%):       {analysis['avg_last_improvement']:.4f}")
 
     # Interpretation
     print("\n[1.5] Interpretation:")
     if analysis['is_plateauing']:
-        print("  ✓ CURVE IS PLATEAUING")
-        print("    → Additional data likely to provide minimal gains")
-        print("    → 498 labeled samples appears SUFFICIENT")
+        print("  OK: CURVE IS PLATEAUING")
+        print("    -> Additional data likely to provide minimal gains")
+        print("    -> 498 labeled samples appears SUFFICIENT")
     else:
-        print("  ✗ CURVE IS STILL INCREASING")
-        print("    → More data would likely improve performance")
-        print("    → Current sample size may be limiting")
+        print("  FAILED: CURVE IS STILL INCREASING")
+        print("    -> More data would likely improve performance")
+        print("    -> Current sample size may be limiting")
 
     if analysis['is_underfitting']:
-        print("  ✓ Model is NOT OVERFITTING (Train-Val gap < 2%)")
-        print("    → Model generalizes well")
-        print("    → Complexity level appears appropriate")
+        print("  OK: Model is NOT OVERFITTING (Train-Val gap < 2%)")
+        print("    -> Model generalizes well")
+        print("    -> Complexity level appears appropriate")
     elif analysis['is_overfitting']:
-        print("  ⚠ Model shows OVERFITTING signs (Train-Val gap > 5%)")
-        print("    → Regularization could be increased")
-        print("    → Consider simpler features")
+        print("  WARNING: Model shows OVERFITTING signs (Train-Val gap > 5%)")
+        print("    -> Regularization could be increased")
+        print("    -> Consider simpler features")
     else:
-        print("  ✓ Model shows BALANCED FIT (2% < Train-Val gap < 5%)")
-        print("    → Healthy balance between bias and variance")
+        print("  OK: Model shows BALANCED FIT (2% < Train-Val gap < 5%)")
+        print("    -> Healthy balance between bias and variance")
 
     # Save analysis
     with open(os.path.join(output_dir, 'phase1_analysis.json'), 'w') as f:
         json.dump(analysis, f, indent=2)
 
-    print(f"\n✓ Analysis saved to phase1_analysis.json")
+    print(f"\nOK: Analysis saved to phase1_analysis.json")
     print("="*100 + "\n")
 
     return df_results, analysis

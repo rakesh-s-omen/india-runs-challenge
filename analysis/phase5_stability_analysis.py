@@ -1,7 +1,7 @@
 """
 PHASE 5: STABILITY ANALYSIS
 Tests model robustness using repeated stratified k-fold cross-validation.
-10 repetitions × 5 folds = 50 independent evaluations.
+10 repetitions x 5 folds = 50 independent evaluations.
 """
 
 import numpy as np
@@ -27,7 +27,7 @@ sns.set_style("whitegrid")
 
 def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     """
-    Repeated Stratified K-Fold Cross-Validation: 10 repetitions × 5 folds.
+    Repeated Stratified K-Fold Cross-Validation: 10 repetitions x 5 folds.
 
     Outputs:
     1. Distribution statistics (mean, std, min, max)
@@ -52,7 +52,7 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     X_scaled = scaler.fit_transform(X_selected)
 
     # Repeated Stratified K-Fold
-    print("[5.2] Running 10 repetitions × 5 folds (50 total evaluations)...\n")
+    print("[5.2] Running 10 repetitions x 5 folds (50 total evaluations)...\n")
 
     rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=10, random_state=42)
 
@@ -167,7 +167,7 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     }
 
     # Print summary
-    print("STABILITY SUMMARY (50 Evaluations: 10 reps × 5 folds):")
+    print("STABILITY SUMMARY (50 Evaluations: 10 reps x 5 folds):")
     print("="*80)
 
     for metric_name, stats in summary_stats.items():
@@ -196,7 +196,7 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
         std = df_metrics[metric].std()
 
         ax.axvline(mean, color='red', linestyle='--', linewidth=2, label=f'Mean: {mean:.4f}')
-        ax.axvline(mean - std, color='orange', linestyle=':', linewidth=2, label=f'±1 Std: {std:.4f}')
+        ax.axvline(mean - std, color='orange', linestyle=':', linewidth=2, label=f'+-1 Std: {std:.4f}')
         ax.axvline(mean + std, color='orange', linestyle=':', linewidth=2)
 
         ax.set_xlabel(metric.replace('_', ' ').title(), fontsize=11, fontweight='bold')
@@ -208,7 +208,7 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     plt.suptitle('Stability Analysis: 50 Independent Evaluations', fontsize=14, fontweight='bold', y=1.00)
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase5_distributions.png'), dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase5_distributions.png")
+    print(f"\nOK: Saved: phase5_distributions.png")
     plt.close()
 
     # ===== VISUALIZATION 2: Box Plots =====
@@ -231,13 +231,13 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
         # Add statistics text
         mean = df_metrics[metric].mean()
         std = df_metrics[metric].std()
-        ax.text(1.3, mean, f'μ={mean:.4f}\nσ={std:.4f}',
+        ax.text(1.3, mean, f'mean={mean:.4f}\nstd={std:.4f}',
                fontsize=10, bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
     plt.suptitle('Stability Analysis: Box Plot View', fontsize=14, fontweight='bold', y=1.00)
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase5_boxplots.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase5_boxplots.png")
+    print(f"OK: Saved: phase5_boxplots.png")
     plt.close()
 
     # ===== VISUALIZATION 3: Time Series View =====
@@ -265,7 +265,7 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase5_timeseries.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase5_timeseries.png")
+    print(f"OK: Saved: phase5_timeseries.png")
     plt.close()
 
     # ===== STABILITY ASSESSMENT =====

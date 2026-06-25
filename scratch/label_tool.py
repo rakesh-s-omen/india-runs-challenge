@@ -128,7 +128,7 @@ def main():
             else:
                 print("Invalid input. Please enter 0, 1, 2, 3, or q.")
                 
-    print(f"\n🎉 Congratulations! You have labeled {count} candidates.")
+    print(f"\n Congratulations! You have labeled {count} candidates.")
 
 if __name__ == "__main__":
     main()

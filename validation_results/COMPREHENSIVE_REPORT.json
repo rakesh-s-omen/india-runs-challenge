@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T23:05:58.372314",
+  "generated_at": "2026-06-25T23:08:59.226234",
   "validation_status": "PASSED",
   "sections": {
     "data_leakage": {
@@ -7,7 +7,7 @@
       "fix_implemented": "SMOTE now applied INSIDE each CV fold only",
       "proof": "stage3_ranking_validated.py applies SMOTE after train/val/test split",
       "impact": "Prevents data leakage, provides honest CV accuracy estimates",
-      "status": "FIXED \u2713"
+      "status": "FIXED [OK]"
     },
     "split": {
       "status": "IMPLEMENTED - See stage3_ranking_validated.py:75-81"
@@ -31,7 +31,7 @@
       ],
       "plateaus": true,
       "interpretation": "498 samples is SUFFICIENT - curve plateaus, not increasing",
-      "status": "VALIDATED \u2713"
+      "status": "VALIDATED [OK]"
     },
     "ranking_metrics": {
       "ndcg_10": 1.0,

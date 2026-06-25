@@ -1,6 +1,6 @@
 ---
 title: India Runs Challenge RETRO
-emoji: 🚀
+emoji: 💻 
 colorFrom: blue
 colorTo: indigo
 sdk: streamlit
@@ -10,7 +10,7 @@ app_file: sandbox/app.py
 pinned: false
 ---
 
-# 🚀 Staged Hybrid Ranking Engine (SHRE)
+#  Staged Hybrid Ranking Engine (SHRE)
 
 An intelligent, production-ready machine learning candidate ranking engine designed to evaluate and shortlist the **Top 100 Senior AI Engineers** from a large pool of 100k+ candidates. 
 
@@ -18,7 +18,7 @@ This repository implements a **Two-Stage Hybrid Architecture** (Filtering + ML R
 
 ---
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 The system processes candidate data through four distinct stages:
 1. **Stage 1 (Fast Filter):** Screens out candidates with insufficient experience and detects timeline-inconsistent "honeypot" resumes.
@@ -28,7 +28,7 @@ The system processes candidate data through four distinct stages:
 
 ---
 
-## 📦 Installation
+##  Installation
 
 To set up the environment and install all dependencies:
 ```bash
@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 ---
 
-## ⚡ How to Run
+##  How to Run
 
 ### 1. Primary Ranking Pipeline
 Run the end-to-end pipeline to process candidates and output the final rankings:
@@ -59,7 +59,7 @@ streamlit run sandbox/app.py
 
 ---
 
-## 📊 Performance Summary
+##  Performance Summary
 
 * **Cross-Validation Accuracy:** **`96.16%`** (5-Fold Stratified CV)
 * **Macro F1-Score:** **`96.17%`**
@@ -68,15 +68,15 @@ streamlit run sandbox/app.py
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 ```text
-├── requirements.txt            # Main project dependencies
-├── submission_metadata.yaml    # Hackathon metadata
-├── README.md                   # This file
-├── src/
-│   ├── main.py                 # Pipeline entry point with SHRE -> CTAE fallback
-│   ├── shre/                   # ML Engine components (Stages 1-4)
-│   └── ctae/                   # Fallback rule-based engine
-├── models/                     # Trained models, scalers, selectors & metadata
-└── sandbox/                    # Streamlit web UI code
+|-- requirements.txt            # Main project dependencies
+|-- submission_metadata.yaml    # Hackathon metadata
+|-- README.md                   # This file
+|-- src/
+|   |-- main.py                 # Pipeline entry point with SHRE -> CTAE fallback
+|   |-- shre/                   # ML Engine components (Stages 1-4)
+|   |-- ctae/                   # Fallback rule-based engine
+|-- models/                     # Trained models, scalers, selectors & metadata
+|-- sandbox/                    # Streamlit web UI code
 ```

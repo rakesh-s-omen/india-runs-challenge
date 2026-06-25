@@ -101,7 +101,7 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
         )
         ensemble_acc = accuracy_score(y_val, ensemble.predict(X_val))
         results['ensemble'].append(ensemble_acc)
-        print(f"  Ensemble:       {ensemble_acc:.4f} ← BEST")
+        print(f"  Ensemble:       {ensemble_acc:.4f} <- BEST")
 
     # Summarize
     print(f"\n" + "="*80)
@@ -114,7 +114,7 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
         std_acc = np.std(accuracies)
         summary[model_name] = {'mean': float(mean_acc), 'std': float(std_acc)}
 
-        print(f"\n{model_name.upper():25s}: {mean_acc:.4f} (±{std_acc:.4f})")
+        print(f"\n{model_name.upper():25s}: {mean_acc:.4f} (+-{std_acc:.4f})")
 
     # Calculate improvement
     ensemble_mean = summary['ensemble']['mean']
@@ -127,7 +127,7 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
     print(f"  vs XGBoost:  +{(ensemble_mean - xgb_mean)*100:.2f}%")
     print(f"  vs LightGBM: +{(ensemble_mean - lgb_mean)*100:.2f}%")
     print(f"  vs CatBoost: +{(ensemble_mean - cb_mean)*100:.2f}%")
-    print(f"\n✓ Ensemble is {'SIGNIFICANTLY' if ensemble_mean > max(xgb_mean, lgb_mean, cb_mean) else 'MARGINALLY'} better")
+    print(f"\nOK: Ensemble is {'SIGNIFICANTLY' if ensemble_mean > max(xgb_mean, lgb_mean, cb_mean) else 'MARGINALLY'} better")
 
     # Save results
     with open(os.path.join(output_dir, 'ablation_study.json'), 'w') as f:
@@ -140,7 +140,7 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
             }
         }, f, indent=2)
 
-    print(f"\n✓ Ablation study saved to {output_dir}/ablation_study.json")
+    print(f"\nOK: Ablation study saved to {output_dir}/ablation_study.json")
     print("="*80 + "\n")
 
     return summary

@@ -2,7 +2,8 @@ import csv
 
 def _generate_reasoning(cand):
     """
-    Generates specific, detailed, non-hallucinated reasoning from actual candidate data.
+    Generates specific, detailed, non-hallucinated reasoning from actual candidate data,
+    phrased as a realistic and professional evaluation sentence.
     """
     profile = cand.get('profile', {})
     signals = cand.get('redrob_signals', {})
@@ -12,52 +13,70 @@ def _generate_reasoning(cand):
     years = profile.get('years_of_experience', 0)
     company = profile.get('current_company', 'N/A')
 
-    parts = [f"{title} ({years}y @ {company})"]
+    # Start sentence
+    intro = f"{title} with {years:.1f} years of experience at {company}"
 
-    # Domain expertise
+    # Skills
     skills = cand.get('skills', [])
-    ml_skills = [s.get('name') for s in skills if any(x in s.get('name', '').lower() for x in ['ml', 'python', 'pytorch', 'tensorflow', 'nlp'])][:3]
+    ml_skills = [s.get('name') for s in skills if any(x in s.get('name', '').lower() for x in ['ml', 'python', 'pytorch', 'tensorflow', 'nlp'])][:2]
     vector_skills = [s.get('name') for s in skills if any(x in s.get('name', '').lower() for x in ['vector', 'milvus', 'pinecone', 'faiss', 'rag'])][:2]
-
-    if vector_skills:
-        parts.append(f"Vector DB: {', '.join(vector_skills)}")
-    elif ml_skills:
-        parts.append(f"ML: {', '.join(ml_skills)}")
-
-    # Backend infrastructure
     backend_skills = [s.get('name') for s in skills if any(x in s.get('name', '').lower() for x in ['spark', 'airflow', 'kafka', 'sql'])][:2]
-    if backend_skills:
-        parts.append(f"Backend: {', '.join(backend_skills)}")
 
-    # Career trajectory
+    focus = ""
+    if vector_skills:
+        focus = f", specializing in vector search and RAG ({', '.join(vector_skills)})"
+    elif ml_skills:
+        focus = f", specializing in applied ML ({', '.join(ml_skills)})"
+
+    infra = ""
+    if backend_skills:
+        infra = f"; experienced in backend infrastructure ({', '.join(backend_skills)})"
+
+    # Trajectory
+    growth = ""
     if len(career) >= 2:
         senior_roles = sum(1 for j in career if any(x in j.get('title', '').lower() for x in ['senior', 'lead', 'principal']))
         if senior_roles >= 1:
-            parts.append("↗️ Seniority growth")
+            growth = ". Shown solid seniority growth in past roles"
 
-    # Behavioral signals
+    # Behavioral
+    behavior = []
     github_score = signals.get('github_activity_score', -1)
-    if github_score > 70:
-        parts.append("⭐ Strong GitHub")
-    elif github_score > 30:
-        parts.append("✓ GitHub active")
-
     resp_rate = signals.get('recruiter_response_rate', 0)
+
+    if github_score > 70:
+        behavior.append("strong GitHub activity")
+    elif github_score > 30:
+        behavior.append("active GitHub presence")
+
     if resp_rate > 0.8:
-        parts.append("🚀 Highly responsive")
+        behavior.append("very high recruiter responsiveness")
     elif resp_rate > 0.5:
-        parts.append("✓ Responsive")
+        behavior.append("good recruiter responsiveness")
 
-    # Concerns/flags
+    behavior_str = ""
+    if behavior:
+        behavior_str = "; features " + " and ".join(behavior)
+
+    # Risk Flags
     notice = signals.get('notice_period_days', 0)
-    if notice > 90:
-        parts.append(f"⚠️ {notice}d notice")
-
     open_to_work = signals.get('open_to_work_flag', False)
+    
+    flags = []
+    if notice > 90:
+        flags.append(f"a long {notice}-day notice period")
     if not open_to_work:
-        parts.append("⚠️ Not actively open")
+        flags.append("not actively seeking new roles")
 
-    return " | ".join(parts)[:220]
+    flags_str = ""
+    if flags:
+        flags_str = ". Note: candidate has " + " and is ".join(flags)
+
+    # Assemble
+    reasoning = f"{intro}{focus}{infra}{growth}{behavior_str}{flags_str}."
+    reasoning = reasoning.replace("..", ".").replace(" .", ".").replace("  ", " ").strip()
+    
+    return reasoning[:220]
 
 def export_submission(candidates, scores, out_path):
     """

@@ -186,7 +186,7 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase6_honeypot_analysis.png'),
                dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase6_honeypot_analysis.png")
+    print(f"\nOK: Saved: phase6_honeypot_analysis.png")
     plt.close()
 
     # ===== CONFUSION MATRIX =====
@@ -205,7 +205,7 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase6_confusion_matrix.png'),
                dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase6_confusion_matrix.png")
+    print(f"OK: Saved: phase6_confusion_matrix.png")
     plt.close()
 
     # ===== SUMMARY REPORT =====

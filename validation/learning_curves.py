@@ -87,22 +87,22 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
         train_scores.append(mean_score)
         val_scores.append(std_score)
 
-        print(f"  Accuracy: {mean_score:.4f} (±{std_score:.4f})")
+        print(f"  Accuracy: {mean_score:.4f} (+-{std_score:.4f})")
 
     # Save learning curve data
     curve_data = {
         'sample_sizes': sample_sizes,
         'accuracies': [float(s) for s in train_scores],
         'std_devs': [float(s) for s in val_scores],
-        'interpretation': 'If accuracies plateau → dataset is sufficient. If still increasing → need more data.'
+        'interpretation': 'If accuracies plateau -> dataset is sufficient. If still increasing -> need more data.'
     }
 
     with open(os.path.join(output_dir, 'learning_curves.json'), 'w') as f:
         json.dump(curve_data, f, indent=2)
 
-    print(f"\n✓ Learning curves saved to {output_dir}/learning_curves.json")
+    print(f"\nOK: Learning curves saved to {output_dir}/learning_curves.json")
     print(f"\nInterpretation:")
-    print(f"  If accuracy plateaus around {train_scores[-1]:.4f} → dataset is sufficient ✓")
-    print(f"  If still increasing rapidly → dataset is too small ✗")
+    print(f"  If accuracy plateaus around {train_scores[-1]:.4f} -> dataset is sufficient [OK]")
+    print(f"  If still increasing rapidly -> dataset is too small [FAILED]")
 
     return curve_data

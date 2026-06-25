@@ -13,7 +13,7 @@ from datetime import datetime
 # ---------------------------------------------------------------------------
 # Global robustness fixes (apply to every phase, since they share these modules)
 # ---------------------------------------------------------------------------
-# 1) Force UTF-8 console so the ✓/✗/→ glyphs don't crash on Windows cp1252.
+# 1) Force UTF-8 console so the [OK]/[FAILED]/-> glyphs don't crash on Windows cp1252.
 for _stream in (sys.stdout, sys.stderr):
     try:
         _stream.reconfigure(encoding='utf-8')
@@ -60,7 +60,7 @@ start_time = datetime.now()
 print(f"\nStarted: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
 # ===== LOAD DATA =====
-print("\n[SETUP] Loading data...")
+print("\nSETUP: Loading data...")
 
 try:
     import json
@@ -69,13 +69,13 @@ try:
     from src.shre.stage2_features import FeatureEngineer
 
     # Load labeled data only. The full candidates.jsonl (487 MB / 100k rows) is
-    # NOT needed here — every labeled record already carries its raw_profile.
+    # NOT needed here - every labeled record already carries its raw_profile.
     labeled_path = 'labeling/combined_labels.json'
 
     with open(labeled_path, 'r', encoding='utf-8') as f:
         labeled = json.load(f)
 
-    print(f"✓ Loaded {len(labeled)} labeled samples")
+    print(f"OK: Loaded {len(labeled)} labeled samples")
 
     # Extract features
     fe = FeatureEngineer()
@@ -88,11 +88,11 @@ try:
     # Clean data
     X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
 
-    print(f"✓ Extracted {X.shape[1]} features for {len(y)} samples")
-    print(f"✓ Class distribution: {dict(zip(*np.unique(y, return_counts=True)))}")
+    print(f"OK: Extracted {X.shape[1]} features for {len(y)} samples")
+    print(f"OK: Class distribution: {dict(zip(*np.unique(y, return_counts=True)))}")
 
 except Exception as e:
-    print(f"✗ Data loading failed: {e}")
+    print(f"FAILED: Data loading failed: {e}")
     import traceback
     traceback.print_exc()
     sys.exit(1)
@@ -106,9 +106,9 @@ print("\n[PHASE 1] Running Learning Curve Analysis...")
 try:
     from analysis.phase1_learning_curves import create_learning_curves
     df_lc, analysis_lc = create_learning_curves(X, y, feature_names, output_dir)
-    print("✓ Phase 1 Complete")
+    print("OK: Phase 1 Complete")
 except Exception as e:
-    print(f"✗ Phase 1 failed: {e}")
+    print(f"FAILED: Phase 1 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -117,9 +117,9 @@ print("\n[PHASE 2] Running Feature Importance Analysis...")
 try:
     from analysis.phase2_feature_importance import analyze_feature_importance
     df_imp, df_perm, corr_df = analyze_feature_importance(X, y, feature_names, output_dir)
-    print("✓ Phase 2 Complete")
+    print("OK: Phase 2 Complete")
 except Exception as e:
-    print(f"✗ Phase 2 failed: {e}")
+    print(f"FAILED: Phase 2 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -128,9 +128,9 @@ print("\n[PHASE 3] Running SHAP Explainability Analysis...")
 try:
     from analysis.phase3_shap_explainability import explain_with_shap
     explanations, interactions = explain_with_shap(X, y, feature_names, output_dir)
-    print("✓ Phase 3 Complete")
+    print("OK: Phase 3 Complete")
 except Exception as e:
-    print(f"✗ Phase 3 failed: {e}")
+    print(f"FAILED: Phase 3 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -139,9 +139,9 @@ print("\n[PHASE 4] Running Ablation Study...")
 try:
     from analysis.phase4_ablation_study import run_ablation_study
     df_models, df_features = run_ablation_study(X, y, feature_names, output_dir)
-    print("✓ Phase 4 Complete")
+    print("OK: Phase 4 Complete")
 except Exception as e:
-    print(f"✗ Phase 4 failed: {e}")
+    print(f"FAILED: Phase 4 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -150,9 +150,9 @@ print("\n[PHASE 5] Running Stability Analysis...")
 try:
     from analysis.phase5_stability_analysis import stability_analysis
     df_stability, stats_stability = stability_analysis(X, y, feature_names, output_dir)
-    print("✓ Phase 5 Complete")
+    print("OK: Phase 5 Complete")
 except Exception as e:
-    print(f"✗ Phase 5 failed: {e}")
+    print(f"FAILED: Phase 5 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -161,9 +161,9 @@ print("\n[PHASE 6] Running Honeypot Validation...")
 try:
     from analysis.phase6_honeypot_validation import honeypot_validation
     df_honeypot, df_honeypot_types = honeypot_validation(X, y, feature_names, output_dir)
-    print("✓ Phase 6 Complete")
+    print("OK: Phase 6 Complete")
 except Exception as e:
-    print(f"✗ Phase 6 failed: {e}")
+    print(f"FAILED: Phase 6 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -172,9 +172,9 @@ print("\n[PHASE 7] Running Error Analysis...")
 try:
     from analysis.phase7_error_analysis import error_analysis
     df_errors, df_class_stats = error_analysis(X, y, feature_names, output_dir)
-    print("✓ Phase 7 Complete")
+    print("OK: Phase 7 Complete")
 except Exception as e:
-    print(f"✗ Phase 7 failed: {e}")
+    print(f"FAILED: Phase 7 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -183,9 +183,9 @@ print("\n[PHASE 8] Running Ranking Validation...")
 try:
     from analysis.phase8_ranking_validation import ranking_validation
     df_ranking = ranking_validation(X, y, feature_names, output_dir)
-    print("✓ Phase 8 Complete")
+    print("OK: Phase 8 Complete")
 except Exception as e:
-    print(f"✗ Phase 8 failed: {e}")
+    print(f"FAILED: Phase 8 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -194,9 +194,9 @@ print("\n[PHASE 9] Generating Competition Report...")
 try:
     from analysis.phase9_competition_report import generate_competition_report
     report = generate_competition_report(output_dir)
-    print("✓ Phase 9 Complete")
+    print("OK: Phase 9 Complete")
 except Exception as e:
-    print(f"✗ Phase 9 failed: {e}")
+    print(f"FAILED: Phase 9 failed: {e}")
     import traceback
     traceback.print_exc()
 
@@ -243,9 +243,9 @@ result_files = [
 for filename, description in result_files:
     filepath = os.path.join(output_dir, filename)
     if os.path.exists(filepath):
-        print(f"✓ {filename:45s} - {description}")
+        print(f"OK: {filename:45s} - {description}")
     else:
-        print(f"✗ {filename:45s} - MISSING")
+        print(f"FAILED: {filename:45s} - MISSING")
 
 print("\n" + "="*100)
 print("ANALYSIS FRAMEWORK COMPLETE")
@@ -257,5 +257,5 @@ print("2. Examine visualizations in analysis_results/")
 print("3. Use insights to refine model or document strengths")
 print("4. Submit with confidence - all metrics are evidence-based")
 
-print("\n✓ Framework successfully completed!")
+print("\nOK: Framework successfully completed!")
 print(f"Finished: {end_time.strftime('%Y-%m-%d %H:%M:%S')}\n")

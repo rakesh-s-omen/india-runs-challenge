@@ -127,7 +127,7 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
                 avg_confidence = error_df[mask]['confidence'].mean()
                 avg_feature_sum = error_df[mask]['feature_sum'].mean()
 
-                print(f"  Class {true_class} → Class {pred_class}: {count} errors " +
+                print(f"  Class {true_class} -> Class {pred_class}: {count} errors " +
                      f"(avg conf: {avg_confidence:.4f}, avg richness: {avg_feature_sum:.2f})")
 
                 confusion_details.append({
@@ -196,7 +196,7 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase7_confusion_matrix.png'),
                dpi=300, bbox_inches='tight')
-    print(f"\n✓ Saved: phase7_confusion_matrix.png")
+    print(f"\nOK: Saved: phase7_confusion_matrix.png")
     plt.close()
 
     # ===== VISUALIZATION 2: Error Rate by Class =====
@@ -240,7 +240,7 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase7_error_rates.png'),
                dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase7_error_rates.png")
+    print(f"OK: Saved: phase7_error_rates.png")
     plt.close()
 
     # ===== VISUALIZATION 3: Error Flow Sankey (simplified as grouped bar) =====
@@ -261,18 +261,18 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
                      edgecolor='black', linewidth=1.5)
 
         # Labels
-        labels = [f"C{row['from_class']}→C{row['to_class']}" for _, row in confusion_df.iterrows()]
+        labels = [f"C{row['from_class']}->C{row['to_class']}" for _, row in confusion_df.iterrows()]
         ax.set_xticks(x_pos)
         ax.set_xticklabels(labels, rotation=45, ha='right')
 
         ax.set_ylabel('Number of Errors', fontsize=11, fontweight='bold')
-        ax.set_title('Misclassification Flow: From → To Class', fontsize=12, fontweight='bold')
+        ax.set_title('Misclassification Flow: From -> To Class', fontsize=12, fontweight='bold')
         ax.grid(True, alpha=0.3, axis='y')
 
         plt.tight_layout()
         plt.savefig(os.path.join(output_dir, 'phase7_error_flow.png'),
                    dpi=300, bbox_inches='tight')
-        print(f"✓ Saved: phase7_error_flow.png")
+        print(f"OK: Saved: phase7_error_flow.png")
         plt.close()
 
     # ===== SAVE SUMMARY =====

@@ -120,7 +120,7 @@ def train_and_predict(labeled_data_path, feature_matrix, feature_names):
     for metric, scores in cv_metrics.items():
         mean_score = np.mean(scores)
         std_score = np.std(scores)
-        print(f"  {metric:20s}: {mean_score:.4f} (±{std_score:.4f})")
+        print(f"  {metric:20s}: {mean_score:.4f} (+-{std_score:.4f})")
 
     # Train final model on SMOTE-resampled data
     print(f"\nTraining final model on {len(X_resampled)} SMOTE-resampled samples...")

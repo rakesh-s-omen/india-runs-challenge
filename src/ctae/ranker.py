@@ -83,28 +83,45 @@ def evaluate_candidate(cand):
     elif notice_days > 60:
         notice_penalty = 0.85
         
-    # Final composite score in [0.0, 3.0] range
+    # Final composite score scaled to [0.0, 1.0] range
     raw_score = (exp_score * 1.2 + skill_score * 1.0 + company_score * 0.5 + behavioral_score * 0.3) * notice_penalty
-    return round(raw_score, 4)
+    return round(raw_score / 3.0, 4)
 
 def generate_reasoning(cand):
+    """
+    Generates specific, detailed, non-hallucinated reasoning from actual candidate data,
+    phrased as a realistic and professional evaluation sentence for the CTAE fallback.
+    """
     profile = cand.get('profile', {})
     signals = cand.get('redrob_signals', {})
-    title = profile.get('current_title', 'ML Engineer')
+    career = cand.get('career_history', [])
+
+    title = profile.get('current_title', 'Engineer')
     years = profile.get('years_of_experience', 0)
     company = profile.get('current_company', 'N/A')
+
+    # Start sentence
+    intro = f"[CTAE Fallback] {title} with {years:.1f} years of experience at {company}"
+
+    # Skills
+    skills = cand.get('skills', [])
+    key_skills = [s.get('name', '') for s in skills if s.get('name')][:3]
     
-    skills = [s.get('name','') for s in cand.get('skills', [])[:3]]
-    skills_str = ", ".join(skills) if skills else "AI/ML"
-    
-    parts = [f"[CTAE Fallback] {title} ({years}y exp @ {company})"]
-    parts.append(f"Skills: {skills_str}")
-    
+    focus = ""
+    if key_skills:
+        focus = f", with skills in {', '.join(key_skills)}"
+
+    # Behavioral
     resp_rate = signals.get('recruiter_response_rate', 0)
+    behavior = ""
     if resp_rate > 0.7:
-        parts.append("Responsive")
-        
-    return " | ".join(parts)[:220]
+        behavior = "; candidate has shown high responsiveness to recruiters"
+
+    # Assemble
+    reasoning = f"{intro}{focus}{behavior}."
+    reasoning = reasoning.replace("..", ".").replace(" .", ".").replace("  ", " ").strip()
+    
+    return reasoning[:220]
 
 def run_ctae_ranking(candidates_path, out_path):
     print(f"Loading candidates from {candidates_path}...")

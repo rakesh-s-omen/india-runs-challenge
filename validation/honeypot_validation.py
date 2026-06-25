@@ -119,17 +119,17 @@ def validate_honeypot_detection(candidates, output_dir='validation_results'):
     with open(os.path.join(output_dir, 'honeypot_validation.json'), 'w') as f:
         json.dump(validation_report, f, indent=2)
 
-    print(f"\n✓ Honeypot validation saved to {output_dir}/honeypot_validation.json")
+    print(f"\nOK: Honeypot validation saved to {output_dir}/honeypot_validation.json")
     print(f"\nValidation Status:")
     if detection_rate > 0.8:
-        print(f"  ✓ Honeypot detection is RELIABLE (detection rate > 80%)")
+        print(f"  OK: Honeypot detection is RELIABLE (detection rate > 80%)")
     else:
-        print(f"  ⚠ Honeypot detection needs improvement (detection rate < 80%)")
+        print(f"  WARNING: Honeypot detection needs improvement (detection rate < 80%)")
 
     if false_pos_rate < 0.2:
-        print(f"  ✓ False positive rate is LOW (< 20%)")
+        print(f"  OK: False positive rate is LOW (< 20%)")
     else:
-        print(f"  ⚠ False positive rate is HIGH (> 20%)")
+        print(f"  WARNING: False positive rate is HIGH (> 20%)")
 
     print("="*80 + "\n")
 

@@ -44,7 +44,7 @@ def run_all_validations():
 
     try:
         # Load labeled data and feature matrix
-        print("\n[SETUP] Loading data...")
+        print("\nSETUP: Loading data...")
         import json
         from src.shre.stage2_features import FeatureEngineer
         from src.common.data_loader import load_jsonl
@@ -65,7 +65,7 @@ def run_all_validations():
 
         feature_names = list(labeled_features[0][1].keys())
 
-        print(f"✓ Loaded {len(y)} labeled samples with {X.shape[1]} features")
+        print(f"OK: Loaded {len(y)} labeled samples with {X.shape[1]} features")
 
         # 1. LEARNING CURVES
         print_header("VALIDATION 1: LEARNING CURVES")
@@ -73,9 +73,9 @@ def run_all_validations():
             from validation.learning_curves import generate_learning_curves
             curve_data = generate_learning_curves(X, y, feature_names, output_dir)
             validation_results['learning_curves'] = curve_data
-            print("✓ Learning curves completed")
+            print("OK: Learning curves completed")
         except Exception as e:
-            print(f"✗ Learning curves failed: {e}")
+            print(f"FAILED: Learning curves failed: {e}")
             import traceback
             traceback.print_exc()
 
@@ -142,9 +142,9 @@ def run_all_validations():
 
             metrics = evaluate_ranking_metrics(y_aug, y_pred_proba_cv, output_dir)
             validation_results['ranking_metrics'] = metrics
-            print("✓ Ranking metrics completed")
+            print("OK: Ranking metrics completed")
         except Exception as e:
-            print(f"✗ Ranking metrics failed: {e}")
+            print(f"FAILED: Ranking metrics failed: {e}")
             import traceback
             traceback.print_exc()
 
@@ -154,9 +154,9 @@ def run_all_validations():
             from validation.ablation_study import run_ablation_study
             ablation_results = run_ablation_study(X, y, feature_names, output_dir)
             validation_results['ablation_study'] = ablation_results
-            print("✓ Ablation study completed")
+            print("OK: Ablation study completed")
         except Exception as e:
-            print(f"✗ Ablation study failed: {e}")
+            print(f"FAILED: Ablation study failed: {e}")
             import traceback
             traceback.print_exc()
 
@@ -166,9 +166,9 @@ def run_all_validations():
             from validation.honeypot_validation import validate_honeypot_detection
             hp_results = validate_honeypot_detection(candidates, output_dir)
             validation_results['honeypot_validation'] = hp_results
-            print("✓ Honeypot validation completed")
+            print("OK: Honeypot validation completed")
         except Exception as e:
-            print(f"✗ Honeypot validation failed: {e}")
+            print(f"FAILED: Honeypot validation failed: {e}")
             import traceback
             traceback.print_exc()
 
@@ -179,14 +179,14 @@ def run_all_validations():
 
             validation_results['all_passed'] = True
             final_report = generate_comprehensive_report(validation_results, output_dir)
-            print("✓ Comprehensive report generated")
+            print("OK: Comprehensive report generated")
         except Exception as e:
-            print(f"✗ Comprehensive report failed: {e}")
+            print(f"FAILED: Comprehensive report failed: {e}")
             import traceback
             traceback.print_exc()
 
     except Exception as e:
-        print(f"\n✗ VALIDATION SUITE FAILED: {e}")
+        print(f"\nFAILED: VALIDATION SUITE FAILED: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -202,14 +202,14 @@ def run_all_validations():
     print(f"  - COMPREHENSIVE_REPORT.json")
 
     print(f"\nAll 8 Critical Issues FIXED:")
-    print(f"  ✓ 1. Data Leakage Prevention (SMOTE inside CV)")
-    print(f"  ✓ 2. Proper Train/Val/Test Split (70/15/15)")
-    print(f"  ✓ 3. Learning Curves (Dataset Sufficiency)")
-    print(f"  ✓ 4. Ranking Metrics (NDCG, MAP, etc.)")
-    print(f"  ✓ 5. Ablation Study (Ensemble Justification)")
-    print(f"  ✓ 6. Honeypot Validation (Detection Metrics)")
-    print(f"  ✓ 7. Feature Selection (78 Features Justified)")
-    print(f"  ✓ 8. External Validation (Unseen Test Set)")
+    print(f"  OK: 1. Data Leakage Prevention (SMOTE inside CV)")
+    print(f"  OK: 2. Proper Train/Val/Test Split (70/15/15)")
+    print(f"  OK: 3. Learning Curves (Dataset Sufficiency)")
+    print(f"  OK: 4. Ranking Metrics (NDCG, MAP, etc.)")
+    print(f"  OK: 5. Ablation Study (Ensemble Justification)")
+    print(f"  OK: 6. Honeypot Validation (Detection Metrics)")
+    print(f"  OK: 7. Feature Selection (78 Features Justified)")
+    print(f"  OK: 8. External Validation (Unseen Test Set)")
 
     print(f"\n>>> SUBMISSION READY FOR COMPETITION <<<")
     print("="*100 + "\n")

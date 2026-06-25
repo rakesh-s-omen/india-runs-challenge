@@ -33,7 +33,7 @@ def test_stage1_filter():
     ff = FastFilter()
     viable = ff.filter(candidates)
 
-    print(f"[OK] Filtered to {len(viable)} viable candidates")
+    print(f"OK: Filtered to {len(viable)} viable candidates")
     print(f"  - Filtered out: {len(candidates) - len(viable)} ({100*(len(candidates)-len(viable))/len(candidates):.1f}%)")
 
     # Check honeypot detection
@@ -51,7 +51,7 @@ def test_stage2_features(candidates):
     fe = FeatureEngineer()
     features = fe.compute_features(candidates)
 
-    print(f"[OK] Extracted features for {len(features)} candidates")
+    print(f"OK: Extracted features for {len(features)} candidates")
 
     if features:
         feature_names = list(features[0][1].keys())
@@ -65,7 +65,7 @@ def test_stage2_features(candidates):
 
         print(f"  - NaN values: {nan_count}")
         print(f"  - Inf values: {inf_count}")
-        print(f"[OK] Feature extraction successful")
+        print(f"OK: Feature extraction successful")
 
     return features, feature_names
 
@@ -88,13 +88,13 @@ def test_stage3_ranking(feature_names):
     fe = FeatureEngineer()
     feature_matrix = fe.compute_features(viable)
 
-    print(f"Feature matrix shape: {len(feature_matrix)} candidates × {len(feature_names)} features")
+    print(f"Feature matrix shape: {len(feature_matrix)} candidates x {len(feature_names)} features")
 
     try:
         scores, metadata = train_and_predict_validated(labeled_path, feature_matrix, feature_names)
-        print(f"[OK] Model training and prediction successful")
-        print(f"[VALIDATED] Test Accuracy: {metadata.get('test_accuracy', 'N/A'):.4f}")
-        print(f"[VALIDATED] Test F1-Score: {metadata.get('test_f1', 'N/A'):.4f}")
+        print(f"OK: Model training and prediction successful")
+        print(f"VALIDATED: Test Accuracy: {metadata.get('test_accuracy', 'N/A'):.4f}")
+        print(f"VALIDATED: Test F1-Score: {metadata.get('test_f1', 'N/A'):.4f}")
         print(f"  - Generated {len(scores)} predictions")
         print(f"  - Score range: [{np.min(scores):.2f}, {np.max(scores):.2f}]")
         print(f"  - Mean score: {np.mean(scores):.4f}")
@@ -102,7 +102,7 @@ def test_stage3_ranking(feature_names):
 
         return scores, viable
     except Exception as e:
-        print(f"[ERROR] Model training failed: {e}")
+        print(f"ERROR: Model training failed: {e}")
         import traceback
         traceback.print_exc()
         return None, None
@@ -114,7 +114,7 @@ def test_stage4_submission(candidates, scores):
     from src.shre.stage4_submit import export_submission
 
     if candidates is None or scores is None:
-        print("[ERROR] Cannot test submission without valid candidates and scores")
+        print("ERROR: Cannot test submission without valid candidates and scores")
         return
 
     out_path = 'output/submission_test.csv'
@@ -125,7 +125,7 @@ def test_stage4_submission(candidates, scores):
         if os.path.exists(out_path):
             with open(out_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
-            print(f"[OK] Submission CSV generated successfully")
+            print(f"OK: Submission CSV generated successfully")
             print(f"  - Output file: {out_path}")
             print(f"  - Total lines: {len(lines)} (including header)")
             print(f"  - Sample entries: {min(3, len(lines)-1)}")
@@ -136,9 +136,9 @@ def test_stage4_submission(candidates, scores):
                 if len(cols) >= 2:
                     print(f"    {i}. Rank {cols[1]}: {cols[0]} (score: {cols[2][:6]}...)")
         else:
-            print(f"[ERROR] Output file not found at {out_path}")
+            print(f"ERROR: Output file not found at {out_path}")
     except Exception as e:
-        print(f"[ERROR] Submission generation failed: {e}")
+        print(f"ERROR: Submission generation failed: {e}")
         import traceback
         traceback.print_exc()
 
@@ -169,7 +169,7 @@ def test_model_accuracy():
         with open(selector_path, 'rb') as f:
             selector = pickle.load(f)
 
-        print("[OK] Model and selector loaded successfully")
+        print("OK: Model and selector loaded successfully")
 
         # Load labeled data and extract features
         with open('labeling/combined_labels.json', 'r') as f:
@@ -193,7 +193,7 @@ def test_model_accuracy():
         # Calculate metrics
         acc = accuracy_score(y, y_pred)
 
-        print(f"\n[OK] Model Accuracy Test Results:")
+        print(f"\nOK: Model Accuracy Test Results:")
         print(f"  - Accuracy: {acc:.4f} ({100*acc:.2f}%)")
         print(f"\nClassification Report:")
         print(classification_report(y, y_pred, zero_division=0))
@@ -213,7 +213,7 @@ def test_model_accuracy():
                 print(f"  Score {i}: {class_acc:.4f} ({count} samples)")
 
     except Exception as e:
-        print(f"[ERROR] Model accuracy test failed: {e}")
+        print(f"ERROR: Model accuracy test failed: {e}")
         import traceback
         traceback.print_exc()
 
@@ -225,19 +225,19 @@ def test_ctae_fallback():
     try:
         run_ctae('data/candidates.jsonl', out_path)
         if os.path.exists(out_path):
-            print(f"[OK] Fallback CSV generated successfully: {out_path}")
+            print(f"OK: Fallback CSV generated successfully: {out_path}")
             # Validate output using python validator
             import subprocess
             validator_script = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'validate_submission.py')
             res = subprocess.run([sys.executable, validator_script, out_path], capture_output=True, text=True)
             if "valid" in res.stdout.lower():
-                print("[OK] Fallback CSV validation passed!")
+                print("OK: Fallback CSV validation passed!")
             else:
-                print(f"[ERROR] Fallback CSV validation failed: {res.stdout} {res.stderr}")
+                print(f"ERROR: Fallback CSV validation failed: {res.stdout} {res.stderr}")
         else:
-            print(f"[ERROR] Fallback output file not found at {out_path}")
+            print(f"ERROR: Fallback output file not found at {out_path}")
     except Exception as e:
-        print(f"[ERROR] Fallback test failed: {e}")
+        print(f"ERROR: Fallback test failed: {e}")
         import traceback
         traceback.print_exc()
 
@@ -263,7 +263,7 @@ def main():
     test_ctae_fallback()
 
     print_header("TEST SUMMARY")
-    print("[OK] All tests completed successfully!")
+    print("OK: All tests completed successfully!")
     print(f"Ended: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"\nNext steps:")
     print(f"  1. Review output/submission_test.csv")

@@ -203,7 +203,7 @@ def ranking_validation(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase8_ranking_metrics.png'),
                dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase8_ranking_metrics.png")
+    print(f"OK: Saved: phase8_ranking_metrics.png")
     plt.close()
 
     # ===== VISUALIZATION 2: Ranking Score Distribution =====
@@ -235,7 +235,7 @@ def ranking_validation(X, y, feature_names, output_dir='analysis_results'):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase8_score_distribution.png'),
                dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase8_score_distribution.png")
+    print(f"OK: Saved: phase8_score_distribution.png")
     plt.close()
 
     # ===== RANKING QUALITY ASSESSMENT =====
@@ -252,7 +252,7 @@ def ranking_validation(X, y, feature_names, output_dir='analysis_results'):
     else:
         quality = "NEEDS IMPROVEMENT"
 
-    print(f"  NDCG@100: {ndcg_100:.4f} → {quality}")
+    print(f"  NDCG@100: {ndcg_100:.4f} -> {quality}")
     print(f"  Model produces reliable rankings of candidates")
     print(f"  Top-100 candidates are well-ordered by relevance")
 

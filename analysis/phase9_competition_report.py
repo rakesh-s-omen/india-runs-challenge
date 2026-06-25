@@ -151,15 +151,15 @@ We conducted ablation experiments on both the machine learning models and the fe
 
 ### Insights
 - **Model Ablation:** XGBoost achieves the highest individual accuracy (**{p4.get('best_individual_accuracy', 0.8554)*100:.2f}%**), while the Ensemble soft-votes to achieve a balanced **{p4.get('ensemble_accuracy', 0.8515)*100:.2f}%** accuracy, offering lower variance and higher stability.
-- **Feature Groups:** Combining all feature categories yields the best result (**{p4.get('feature_groups_analysis', [{}])[0].get('Accuracy', 0.8454)*100:.2f}%**). Among single groups, the strongest standalone group is **{(max([g for g in p4.get('feature_groups_analysis', []) if g.get('Feature_Group','')!='All Features'], key=lambda g: g.get('Accuracy',0), default={}).get('Feature_Group','technical'))}** — see the Feature Group Ablation Table above for the exact per-group accuracy, which is the only evidence relied upon here.
+- **Feature Groups:** Combining all feature categories yields the best result (**{p4.get('feature_groups_analysis', [{}])[0].get('Accuracy', 0.8454)*100:.2f}%**). Among single groups, the strongest standalone group is **{(max([g for g in p4.get('feature_groups_analysis', []) if g.get('Feature_Group','')!='All Features'], key=lambda g: g.get('Accuracy',0), default={}).get('Feature_Group','technical'))}** - see the Feature Group Ablation Table above for the exact per-group accuracy, which is the only evidence relied upon here.
 
 ---
 
 ## 8. Phase 5: Stability Analysis
 To measure performance variance, a Repeated Stratified K-Fold CV was executed (10 repetitions, 5 folds = 50 total runs).
 
-- **Mean Accuracy:** **{p5.get('accuracy', {}).get('mean', 0.8523)*100:.2f}%** (± **{p5.get('accuracy', {}).get('std', 0.0301)*100:.2f}%**)
-- **Mean Macro F1:** **{p5.get('f1_macro', {}).get('mean', 0.7890)*100:.2f}%** (± **{p5.get('f1_macro', {}).get('std', 0.0433)*100:.2f}%**)
+- **Mean Accuracy:** **{p5.get('accuracy', {}).get('mean', 0.8523)*100:.2f}%** (+- **{p5.get('accuracy', {}).get('std', 0.0301)*100:.2f}%**)
+- **Mean Macro F1:** **{p5.get('f1_macro', {}).get('mean', 0.7890)*100:.2f}%** (+- **{p5.get('f1_macro', {}).get('std', 0.0433)*100:.2f}%**)
 - **Model Stability Assessment:** **{p5.get('stability_assessment', 'ACCEPTABLE')}** (Coefficient of Variation for Accuracy: **{p5.get('coefficient_of_variation_accuracy', 3.53):.2f}%**)
 
 ---
@@ -186,9 +186,9 @@ We tested the SHRE model against **{p6.get('num_honeypot_samples', 250)} synthet
 
     report_text += f"""
 ### Assessment
-- **Overall:** The model rejects **{p6.get('overall_detection_rate',0)*100:.1f}%** of synthetic honeypots back to Class 0. This is a partial defense — strong against structural anomalies, weak against semantic padding.
+- **Overall:** The model rejects **{p6.get('overall_detection_rate',0)*100:.1f}%** of synthetic honeypots back to Class 0. This is a partial defense - strong against structural anomalies, weak against semantic padding.
 - **Strengths:** 100% detection on {_strong_str}. These profiles exhibit out-of-distribution value patterns or mismatched timeline durations that the ensemble rejects outright.
-- **Weaknesses / Failure Cases:** Lowest detection on {_weak_str}. In particular `Keyword_Stuffing` is not caught by the statistical model because it carries no hard ceiling on keyword density — padded skills inflate the relevance score. `Minimal_Profile` is only partially rejected because near-empty feature vectors sit close to the genuine Class-0/Class-1 boundary.
+- **Weaknesses / Failure Cases:** Lowest detection on {_weak_str}. In particular `Keyword_Stuffing` is not caught by the statistical model because it carries no hard ceiling on keyword density - padded skills inflate the relevance score. `Minimal_Profile` is only partially rejected because near-empty feature vectors sit close to the genuine Class-0/Class-1 boundary.
 - **Recommended fix:** Honeypot defense should live in the rule-based Stage-1 filter (keyword-density cap, skill-vs-tenure consistency check), not the soft-voting ensemble.
 
 ---
@@ -202,12 +202,12 @@ We analyzed the **{p7.get('total_errors', 7)} misclassified samples** (out of 75
 """
 
     for transition in p7.get('error_transitions', []):
-        report_text += f"  - Class {transition.get('from_class')} → Class {transition.get('to_class')}: {transition.get('num_errors')} errors (Avg Confidence: {transition.get('avg_confidence', 0):.4f}, Avg Richness: {transition.get('avg_feature_richness', 0):.2f})\n"
+        report_text += f"  - Class {transition.get('from_class')} -> Class {transition.get('to_class')}: {transition.get('num_errors')} errors (Avg Confidence: {transition.get('avg_confidence', 0):.4f}, Avg Richness: {transition.get('avg_feature_richness', 0):.2f})\n"
 
     report_text += f"""
 ### Root Causes
-1. **Class 0 → Class 1 Confusion:** The model misclassified 4 non-relevant candidates as class 1 (potential fits). These profiles had rich text summaries (avg richness: 40.92) but lacked technical depth, indicating the model was mildly swayed by summary length.
-2. **Class 2 → Class 3 Border Confusion:** 2 errors occurred on the border between strong fits and ideal hires. The model predicted Class 3 with high confidence (89.75%), showing that boundary definition for Class 3 remains highly sensitive to minor feature perturbations.
+1. **Class 0 -> Class 1 Confusion:** The model misclassified 4 non-relevant candidates as class 1 (potential fits). These profiles had rich text summaries (avg richness: 40.92) but lacked technical depth, indicating the model was mildly swayed by summary length.
+2. **Class 2 -> Class 3 Border Confusion:** 2 errors occurred on the border between strong fits and ideal hires. The model predicted Class 3 with high confidence (89.75%), showing that boundary definition for Class 3 remains highly sensitive to minor feature perturbations.
 
 ---
 
@@ -240,12 +240,12 @@ Assessed against the evidence in this report, not aspiration.
 | --- | --- | --- |
 | Leakage control | SMOTE applied inside CV folds only; held-out test never augmented | PASS |
 | Held-out accuracy | {p7.get('overall_accuracy', 0.9067)*100:.2f}% on {p7.get('test_set_size', 75)} unseen samples | PASS |
-| Stability | Acc {p5.get('accuracy', {}).get('mean', 0.859)*100:.1f}% ± {p5.get('accuracy', {}).get('std', 0.030)*100:.1f}% over 50 runs (CV {p5.get('coefficient_of_variation_accuracy', 3.5):.1f}%) | {p5.get('stability_assessment','ACCEPTABLE')} |
+| Stability | Acc {p5.get('accuracy', {}).get('mean', 0.859)*100:.1f}% +- {p5.get('accuracy', {}).get('std', 0.030)*100:.1f}% over 50 runs (CV {p5.get('coefficient_of_variation_accuracy', 3.5):.1f}%) | {p5.get('stability_assessment','ACCEPTABLE')} |
 | Ranking quality | NDCG@100 = {p8.get('ndcg_at_100', 0.959):.4f}; Hit@10 = {p8.get('top_k_hit_rate', {}).get('hit_rate_at_10', 1.0)*100:.0f}% | PASS |
-| Adversarial robustness | Honeypot detection {p6.get('overall_detection_rate', 0.716)*100:.1f}% — fails on keyword-stuffing | PARTIAL |
+| Adversarial robustness | Honeypot detection {p6.get('overall_detection_rate', 0.716)*100:.1f}% - fails on keyword-stuffing | PARTIAL |
 | Reproducibility | All random seeds fixed (random_state=42); single end-to-end runner | PASS |
 
-**Honest verdict:** The model is statistically sound, stable, and produces high-quality rankings on the held-out set, with full leakage control. Two caveats a judge should weigh: (1) the held-out test set is small ({p7.get('test_set_size', 75)} samples), so the {p7.get('overall_accuracy', 0.9067)*100:.1f}% point estimate carries a non-trivial confidence interval — the 50-run stability band ({p5.get('accuracy', {}).get('mean', 0.859)*100:.1f}% ± {p5.get('accuracy', {}).get('std', 0.030)*100:.1f}%) is the more reliable expectation; (2) adversarial robustness to keyword-stuffing must be handled by the Stage-1 rule filter, not the ensemble. With those two items addressed, the submission is competition-ready.
+**Honest verdict:** The model is statistically sound, stable, and produces high-quality rankings on the held-out set, with full leakage control. Two caveats a judge should weigh: (1) the held-out test set is small ({p7.get('test_set_size', 75)} samples), so the {p7.get('overall_accuracy', 0.9067)*100:.1f}% point estimate carries a non-trivial confidence interval - the 50-run stability band ({p5.get('accuracy', {}).get('mean', 0.859)*100:.1f}% +- {p5.get('accuracy', {}).get('std', 0.030)*100:.1f}%) is the more reliable expectation; (2) adversarial robustness to keyword-stuffing must be handled by the Stage-1 rule filter, not the ensemble. With those two items addressed, the submission is competition-ready.
 
 ---
 

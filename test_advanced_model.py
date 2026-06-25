@@ -35,7 +35,7 @@ def test_basic_model():
         # Train basic model
         scores = basic_train('labeling/combined_labels.json', feature_matrix, feature_names)
 
-        print(f"\n[OK] Basic model training complete")
+        print(f"\nOK: Basic model training complete")
         print(f"     Predictions: {len(scores)}")
         print(f"     Score range: [{np.min(scores):.4f}, {np.max(scores):.4f}]")
 
@@ -49,7 +49,7 @@ def test_basic_model():
         return metadata.get('cv_accuracy_mean', 0)
 
     except Exception as e:
-        print(f"[ERROR] Basic model test failed: {e}")
+        print(f"ERROR: Basic model test failed: {e}")
         import traceback
         traceback.print_exc()
         return 0
@@ -84,7 +84,7 @@ def test_advanced_model():
         # Train advanced model
         scores = advanced_train('labeling/combined_labels.json', feature_matrix, feature_names)
 
-        print(f"\n[OK] Advanced model training complete")
+        print(f"\nOK: Advanced model training complete")
         print(f"     Predictions: {len(scores)}")
         print(f"     Score range: [{np.min(scores):.4f}, {np.max(scores):.4f}]")
 
@@ -99,12 +99,12 @@ def test_advanced_model():
         return metadata.get('cv_accuracy_mean', 0)
 
     except ImportError as e:
-        print(f"\n[ERROR] Missing dependencies!")
+        print(f"\nERROR: Missing dependencies!")
         print(f"Install with: pip install lightgbm catboost imbalanced-learn")
         print(f"\nError: {e}")
         return 0
     except Exception as e:
-        print(f"[ERROR] Advanced model test failed: {e}")
+        print(f"ERROR: Advanced model test failed: {e}")
         import traceback
         traceback.print_exc()
         return 0
@@ -119,7 +119,7 @@ def main():
     print("\nThis script compares:")
     print("  1. Basic Model:    Single XGBoost")
     print("  2. Advanced Model: Ensemble (XGBoost + LightGBM + CatBoost)")
-    print("\nTarget: Improve accuracy from 84.55% → 90%+\n")
+    print("\nTarget: Improve accuracy from 84.55% -> 90%+\n")
 
     # Test basic model
     basic_acc = test_basic_model()
@@ -161,11 +161,11 @@ def main():
     print("="*80)
 
     if advanced_acc >= 0.90:
-        print("✓ Advanced model achieved 90%+ accuracy!")
+        print("OK: Advanced model achieved 90%+ accuracy!")
         print("  Use for production: python src/main.py data/candidates.jsonl output/submission.csv")
         print("  (Make sure to edit main.py to use stage3_ranking_advanced.py)")
     elif advanced_acc > basic_acc:
-        print(f"✓ Advanced model improved accuracy by {(advanced_acc - basic_acc)*100:.2f}%")
+        print(f"OK: Advanced model improved accuracy by {(advanced_acc - basic_acc)*100:.2f}%")
         print("  To reach 90%+, collect more labeled data or add new features")
     else:
         print("Run advanced model with: python test_advanced_model.py --advanced-only")

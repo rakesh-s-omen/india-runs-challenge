@@ -104,9 +104,9 @@ def evaluate_ranking_metrics(y_true, y_pred_proba, output_dir='validation_result
     with open(os.path.join(output_dir, 'ranking_metrics.json'), 'w') as f:
         json.dump(results, f, indent=2)
 
-    print(f"\n✓ Ranking metrics saved to {output_dir}/ranking_metrics.json")
+    print(f"\nOK: Ranking metrics saved to {output_dir}/ranking_metrics.json")
     print(f"\nInterpretation:")
-    print(f"  NDCG > 0.7 → Good ranking quality ✓")
-    print(f"  NDCG < 0.5 → Poor ranking quality ✗")
+    print(f"  NDCG > 0.7 -> Good ranking quality [OK]")
+    print(f"  NDCG < 0.5 -> Poor ranking quality [FAILED]")
 
     return results

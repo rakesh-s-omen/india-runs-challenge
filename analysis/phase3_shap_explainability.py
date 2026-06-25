@@ -122,7 +122,7 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase3_shap_summary.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase3_shap_summary.png")
+    print(f"OK: Saved: phase3_shap_summary.png")
     plt.close()
 
     # ===== VISUALIZATION 2: SHAP Summary Plot (Density) =====
@@ -131,7 +131,7 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
                      plot_type="violin", show=False)
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase3_shap_density.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase3_shap_density.png")
+    print(f"OK: Saved: phase3_shap_density.png")
     plt.close()
 
     # ===== VISUALIZATION 3: SHAP Dependence Plots (Top 5 Features) =====
@@ -155,7 +155,7 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     plt.suptitle('SHAP Dependence Plots (Top 5 Features)', fontsize=13, fontweight='bold', y=1.00)
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'phase3_shap_dependence.png'), dpi=300, bbox_inches='tight')
-    print(f"✓ Saved: phase3_shap_dependence.png")
+    print(f"OK: Saved: phase3_shap_dependence.png")
     plt.close()
 
     # ===== INDIVIDUAL CANDIDATE EXPLANATIONS =====
@@ -198,7 +198,7 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
         plt.tight_layout()
         plt.savefig(os.path.join(output_dir, f'phase3_waterfall_{label}.png'),
                    dpi=300, bbox_inches='tight')
-        print(f"✓ Saved: phase3_waterfall_{label}.png")
+        print(f"OK: Saved: phase3_waterfall_{label}.png")
         plt.close()
 
     # Save explanations as JSON
@@ -300,13 +300,13 @@ def print_candidate_explanation(explanation):
     print(f"{'='*80}")
 
     if explanation['positive_factors']:
-        print("\n✓ POSITIVE FACTORS (Increase Relevance Score):")
+        print("\nOK: POSITIVE FACTORS (Increase Relevance Score):")
         for i, factor in enumerate(explanation['positive_factors'], 1):
             print(f"  {i}. {factor['feature']:50s} SHAP: +{factor['shap_value']:.4f}")
             print(f"     (Feature value: {factor['feature_value']:.4f})")
 
     if explanation['negative_factors']:
-        print("\n✗ NEGATIVE FACTORS (Decrease Relevance Score):")
+        print("\nFAILED: NEGATIVE FACTORS (Decrease Relevance Score):")
         for i, factor in enumerate(explanation['negative_factors'], 1):
             print(f"  {i}. {factor['feature']:50s} SHAP: {factor['shap_value']:.4f}")
             print(f"     (Feature value: {factor['feature_value']:.4f})")
