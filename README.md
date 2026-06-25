@@ -1,3 +1,14 @@
+---
+title: India Runs Challenge RETRO
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: 1.31.0
+app_file: sandbox/app.py
+pinned: false
+---
+
 # 🚀 Staged Hybrid Ranking Engine (SHRE)
 
 An intelligent, production-ready machine learning candidate ranking engine designed to evaluate and shortlist the **Top 100 Senior AI Engineers** from a large pool of 100k+ candidates. 
