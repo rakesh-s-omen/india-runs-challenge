@@ -64,7 +64,9 @@ def export_submission(candidates, scores, out_path):
     Sorts candidates by score, breaks ties by candidate_id, and writes top 100 to CSV.
     """
     import os
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    dir_name = os.path.dirname(out_path)
+    if dir_name:
+        os.makedirs(dir_name, exist_ok=True)
     # Combine candidate ID, score, and the raw candidate object
     scored_candidates = []
     for cand, score in zip(candidates, scores):
