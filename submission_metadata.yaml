@@ -4,17 +4,23 @@
 # ============================================================================
 # Team identity
 # ============================================================================
-team_name: "Staged-Hybrid-Ranking-Team"  # Replace with your actual team name
+team_name: "RETRO"  # Replace with your actual team name
 
 primary_contact:
   name: "Rakes"
   email: "rakeshsakthi253@gmail.com"     # Replace with your actual email
-  phone: "+91-XXXXXXXXXX"                 # Replace with your phone number
+  phone: "+91-7010582378"                 # Replace with your phone number
 
 team_members:
-  - name: "Rakes"
+  - name: "Rakesh S"
     email: "rakeshsakthi253@gmail.com"
     role: "ML Engineer"
+  - name: "Anirudhh S"
+    email: " "
+    role: " "
+  - name: "Shubha H"
+    email: " "
+    role: " "
 
 # ============================================================================
 # Code and reproducibility
