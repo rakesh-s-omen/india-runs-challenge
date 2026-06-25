@@ -1,101 +1,101 @@
 candidate_id,rank,score,reasoning
-CAND_0050454,1,2.969112376690049,AI Engineer (6.8y @ Rephrase.ai) | Vector DB: FAISS | ✓ Responsive
-CAND_0033445,2,2.963729243374973,ML Engineer (6.8y @ Vedantu) | Vector DB: pgvector | 🚀 Highly responsive
-CAND_0007009,3,2.9628869659302985,Recommendation Systems Engineer (7.9y @ Wysa) | ML: Python | ✓ GitHub active | ✓ Responsive
-CAND_0049540,4,2.962443133019765,ML Engineer (6.8y @ Saarthi.ai) | Vector DB: pgvector | 🚀 Highly responsive
-CAND_0041669,5,2.956778941037388,"Recommendation Systems Engineer (8.0y @ CRED) | Vector DB: FAISS, Milvus | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0064326,6,2.955765420948364,"Search Engineer (7.6y @ Sarvam AI) | Vector DB: Milvus, RAG | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0003791,7,2.9544434339302788,ML Engineer (6.6y @ Meesho) | Vector DB: pgvector | ✓ GitHub active | ✓ Responsive
-CAND_0072688,8,2.9529892452009854,Data Scientist (6.9y @ Niramai) | Vector DB: Milvus | 🚀 Highly responsive
-CAND_0098780,9,2.9524560541074596,"AI Research Engineer (5.9y @ Zomato) | Vector DB: Milvus, Pinecone | ✓ Responsive"
-CAND_0069905,10,2.951802908346479,"Applied ML Engineer (6.6y @ Sarvam AI) | ML: TensorFlow, MLOps, Python | ✓ GitHub active | ✓ Responsive"
-CAND_0044222,11,2.951635923355874,AI Engineer (7.7y @ PolicyBazaar) | Vector DB: Vector Search | ✓ Responsive
-CAND_0024878,12,2.948691003990643,AI Specialist (5.7y @ HCL) | Vector DB: pgvector | 🚀 Highly responsive
-CAND_0045862,13,2.946665912366025,AI Specialist (6.7y @ Yellow.ai) | Vector DB: Vector Search | ✓ GitHub active | ✓ Responsive
-CAND_0073007,14,2.945736436526295,"AI Specialist (5.8y @ Aganitha) | Vector DB: Milvus, FAISS | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0018549,15,2.9455232876147592,Recommendation Systems Engineer (6.8y @ Uber) | Vector DB: Milvus | ✓ GitHub active | ✓ Responsive
-CAND_0052195,16,2.945347722469937,"Computer Vision Engineer (6.3y @ Sarvam AI) | ML: MLflow, NLP | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0069638,17,2.9448802806023746,Computer Vision Engineer (6.2y @ Swiggy) | Vector DB: Pinecone | ✓ Responsive
-CAND_0014234,18,2.9433792320331524,Junior ML Engineer (5.4y @ Tech Mahindra) | Vector DB: pgvector
-CAND_0059017,19,2.9433530285461758,AI Research Engineer (6.8y @ PhonePe) | Vector DB: FAISS | ⭐ Strong GitHub | ✓ Responsive
-CAND_0018094,20,2.9429567501837415,ML Engineer (5.2y @ Mad Street Den) | Vector DB: Pinecone | Backend: Kafka | ✓ Responsive
-CAND_0062247,21,2.9422538339315096,"AI Engineer (7.3y @ Google) | Vector DB: Pinecone, Vector Search | ✓ GitHub active | ✓ Responsive"
-CAND_0017960,22,2.9421978179612416,"Recommendation Systems Engineer (7.7y @ Nykaa) | ML: Python, BentoML | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0031593,23,2.942138642453821,"Search Engineer (7.8y @ Genpact AI) | ML: BentoML, HTML | ✓ Responsive"
-CAND_0079387,24,2.9421181350121346,AI Engineer (6.9y @ Microsoft) | Vector DB: Vector Search | ✓ GitHub active | 🚀 Highly responsive
-CAND_0083852,25,2.9414463711553824,"Data Scientist (6.0y @ Mad Street Den) | Vector DB: Pinecone, pgvector | ⭐ Strong GitHub | 🚀 Highly responsive"
-CAND_0007567,26,2.940189627359494,AI Specialist (6.1y @ Niramai) | Vector DB: FAISS | ✓ GitHub active | ✓ Responsive
-CAND_0070525,27,2.939256422823952,Senior Software Engineer (ML) (5.4y @ Mad Street Den) | ML: Python | ↗️ Seniority growth | 🚀 Highly responsive
-CAND_0098217,28,2.938826424940102,"ML Engineer (6.4y @ Glance) | Vector DB: FAISS, Pinecone | ⭐ Strong GitHub | 🚀 Highly responsive"
-CAND_0026716,29,2.937091316443803,"Computer Vision Engineer (5.6y @ PharmEasy) | Vector DB: Pinecone, pgvector | ⭐ Strong GitHub | 🚀 Highly responsive"
-CAND_0063622,30,2.9350877288478037,Computer Vision Engineer (5.2y @ Niramai) | Vector DB: Vector Search | 🚀 Highly responsive
-CAND_0076035,31,2.934682945016218,AI Specialist (7.0y @ Swiggy) | Vector DB: RAG | ✓ Responsive
-CAND_0010408,32,2.9345136399358163,Junior ML Engineer (5.7y @ Meesho) | Vector DB: Milvus | ⭐ Strong GitHub
-CAND_0073982,33,2.9344055182312774,"Data Scientist (7.0y @ Dream11) | Vector DB: RAG, FAISS | ✓ Responsive"
-CAND_0043637,34,2.9339513678649203,"Junior ML Engineer (5.5y @ Rephrase.ai) | Vector DB: Milvus, pgvector | ↗️ Seniority growth | 🚀 Highly responsive"
-CAND_0096655,35,2.93267282887169,Junior ML Engineer (5.9y @ Genpact AI) | Vector DB: RAG | Backend: Spark | ✓ Responsive
-CAND_0089381,36,2.932450138025312,"Computer Vision Engineer (6.0y @ Ola) | Vector DB: Pinecone, Milvus | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0098454,37,2.931224625215416,"AI Specialist (6.6y @ Meesho) | Vector DB: Vector Search, Pinecone | 🚀 Highly responsive"
-CAND_0001707,38,2.929505388700014,Data Scientist (5.6y @ Vedantu) | Vector DB: FAISS
-CAND_0081852,39,2.928766391767412,"Senior Data Scientist (5.9y @ Mad Street Den) | Vector DB: Milvus, pgvector | ↗️ Seniority growth | ⭐ Strong GitHub"
-CAND_0043860,40,2.928733292474976,"Junior ML Engineer (6.1y @ Aganitha) | Vector DB: pgvector, Vector Search | ↗️ Seniority growth | 🚀 Highly responsive"
-CAND_0065878,41,2.9287113019926263,"Senior Data Scientist (7.8y @ Niramai) | Vector DB: RAG, pgvector | ↗️ Seniority growth"
-CAND_0053605,42,2.9280885741055536,"Senior Software Engineer (ML) (6.9y @ Verloop.io) | Vector DB: pgvector, RAG | ↗️ Seniority growth | 🚀 Highly responsive"
-CAND_0025335,43,2.927818546724055,Data Scientist (6.6y @ PolicyBazaar) | Vector DB: RAG
-CAND_0077067,44,2.927711558027137,"AI Specialist (5.4y @ PolicyBazaar) | Vector DB: Pinecone, Vector Search | 🚀 Highly responsive"
-CAND_0053591,45,2.9276299191807604,"AI Engineer (5.3y @ Ola) | Vector DB: Milvus, RAG | ⭐ Strong GitHub | 🚀 Highly responsive"
-CAND_0060315,46,2.9275413743766445,Senior Software Engineer (ML) (5.4y @ Glance) | Vector DB: Milvus | ↗️ Seniority growth | ✓ Responsive
-CAND_0036484,47,2.92471218273517,AI Research Engineer (5.7y @ InMobi) | Vector DB: Milvus | ✓ Responsive
-CAND_0072547,48,2.9242459710207074,Senior Software Engineer (ML) (5.1y @ Vedantu) | Vector DB: pgvector | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive
-CAND_0002793,49,2.923673289646579,"AI Specialist (5.5y @ Meesho) | Vector DB: pgvector, FAISS | ⭐ Strong GitHub | ✓ Responsive | ⚠️ Not actively open"
-CAND_0018653,50,2.921123321173069,"ML Engineer (6.5y @ Vedantu) | Vector DB: RAG, Vector Search | ✓ Responsive | ⚠️ Not actively open"
-CAND_0005649,51,2.9211183824673848,Senior Data Scientist (7.4y @ Sarvam AI) | Vector DB: RAG | ↗️ Seniority growth | ⭐ Strong GitHub | ✓ Responsive
-CAND_0026942,52,2.9210882284134403,"Junior ML Engineer (6.0y @ Verloop.io) | ML: TensorFlow, BentoML, MLflow | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0077261,53,2.920848541451476,"AI Specialist (5.7y @ Meesho) | Vector DB: pgvector, Vector Search | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0097079,54,2.9205482910660026,Computer Vision Engineer (5.7y @ Freshworks) | ML: NLP | ✓ GitHub active | ✓ Responsive
-CAND_0074731,55,2.9201988061793145,"Data Scientist (6.6y @ InMobi) | ML: PyTorch, TensorFlow, Python | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0022614,56,2.9201959431749263,"Data Scientist (6.0y @ Verloop.io) | Vector DB: Milvus, pgvector | ↗️ Seniority growth | ✓ Responsive"
-CAND_0018701,57,2.9200834733629795,Junior ML Engineer (6.0y @ Krutrim) | ML: MLflow | Backend: SQL | ✓ Responsive
-CAND_0008943,58,2.9197967268789315,Computer Vision Engineer (6.0y @ Observe.AI) | ML: NLP | ↗️ Seniority growth | ✓ Responsive
-CAND_0077498,59,2.9196727109998815,Senior Software Engineer (ML) (5.4y @ Niramai) | Vector DB: Milvus | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive
-CAND_0029135,60,2.919603003794119,AI Specialist (5.8y @ Meesho) | Vector DB: FAISS | ↗️ Seniority growth | ✓ Responsive
-CAND_0049831,61,2.9185914199003378,Computer Vision Engineer (5.4y @ BYJU'S) | ML: NLP | ⭐ Strong GitHub
-CAND_0060538,62,2.91844683868785,"ML Engineer (5.2y @ Verloop.io) | Vector DB: pgvector, Milvus | ✓ Responsive"
-CAND_0064888,63,2.918384389095893,ML Engineer (5.8y @ Verloop.io) | Vector DB: pgvector | ↗️ Seniority growth | 🚀 Highly responsive
-CAND_0039962,64,2.9174650760503336,ML Engineer (6.5y @ Paytm) | Vector DB: Pinecone | ✓ Responsive
-CAND_0008295,65,2.9164761741451923,"AI Research Engineer (6.5y @ Razorpay) | ML: Python, MLflow, BentoML | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive"
-CAND_0072660,66,2.916385872241922,"Machine Learning Engineer (7.1y @ Unacademy) | Vector DB: pgvector, FAISS | Backend: PostgreSQL | ✓ Responsive"
-CAND_0002120,67,2.9163019188114756,"ML Engineer (6.5y @ HCL) | Vector DB: RAG, Pinecone | Backend: PostgreSQL | ✓ GitHub active | ✓ Responsive"
-CAND_0032089,68,2.915869439994855,"ML Engineer (6.6y @ Saarthi.ai) | Vector DB: Pinecone, Milvus | ✓ Responsive"
-CAND_0098846,69,2.915424128542471,"AI Engineer (7.6y @ upGrad) | ML: MLOps, TensorFlow, BentoML | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0070514,70,2.9151798533584072,"AI Specialist (5.5y @ Glance) | Vector DB: Pinecone, FAISS | ✓ GitHub active | ✓ Responsive"
-CAND_0037160,71,2.914504741248648,Data Scientist (6.0y @ Haptik) | Vector DB: Vector Search | ↗️ Seniority growth | ✓ Responsive
-CAND_0004402,72,2.9143013532429274,"AI Research Engineer (6.0y @ Yellow.ai) | ML: PyTorch, BentoML | 🚀 Highly responsive"
-CAND_0064256,73,2.9132423767466387,"Junior ML Engineer (6.4y @ BYJU'S) | ML: PyTorch, MLOps, Python | 🚀 Highly responsive"
-CAND_0074123,74,2.912641600855028,Data Scientist (6.9y @ CRED) | Vector DB: pgvector | ↗️ Seniority growth
-CAND_0019880,75,2.9124041259290463,"AI Specialist (5.7y @ Aganitha) | ML: NLP, MLOps | ✓ Responsive"
-CAND_0025640,76,2.912055648249674,AI Research Engineer (5.6y @ HCL) | Vector DB: FAISS | 🚀 Highly responsive
-CAND_0074326,77,2.91150682644241,Junior ML Engineer (6.4y @ Tech Mahindra) | Vector DB: Pinecone | 🚀 Highly responsive
-CAND_0070225,78,2.911373318567289,ML Engineer (6.0y @ Swiggy) | Vector DB: Milvus
-CAND_0044890,79,2.9112609928015285,AI Research Engineer (5.0y @ Haptik) | Vector DB: FAISS | ✓ GitHub active | ✓ Responsive
-CAND_0092255,80,2.9111207688277694,"ML Engineer (5.2y @ InMobi) | Vector DB: RAG, Vector Search | ⭐ Strong GitHub"
-CAND_0060257,81,2.9107752530429285,"AI Specialist (5.8y @ Paytm) | Vector DB: Vector Search, Milvus | Backend: SQL | ✓ GitHub active | ✓ Responsive"
-CAND_0035653,82,2.910423480999791,"Data Scientist (5.6y @ Swiggy) | Vector DB: Vector Search, RAG | Backend: Kafka | ✓ GitHub active"
-CAND_0062413,83,2.9101195309962393,AI Research Engineer (6.6y @ upGrad) | Vector DB: Pinecone | Backend: Kafka | ✓ GitHub active | ✓ Responsive
-CAND_0096131,84,2.909807297988814,"AI Specialist (5.3y @ Paytm) | ML: TensorFlow, BentoML | Backend: SQL | ↗️ Seniority growth | ✓ Responsive"
-CAND_0017090,85,2.9097622628608315,"Senior Software Engineer (ML) (5.5y @ Paytm) | ML: Python, BentoML | Backend: PostgreSQL | ↗️ Seniority growth | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0046526,86,2.9095026808056943,ML Engineer (5.5y @ Ola) | Vector DB: FAISS | ✓ Responsive
-CAND_0011432,87,2.906554205248104,Senior Data Scientist (7.6y @ Amazon) | Vector DB: pgvector | ↗️ Seniority growth | ✓ Responsive
-CAND_0001131,88,2.906430743722982,"ML Engineer (5.8y @ Wysa) | Vector DB: Vector Search, RAG | ✓ GitHub active | ✓ Responsive"
-CAND_0076251,89,2.9061801552776307,Search Engineer (7.6y @ Haptik) | Backend: Kafka | ↗️ Seniority growth | ✓ Responsive
-CAND_0012837,90,2.9056584896952367,Junior ML Engineer (6.4y @ Sarvam AI) | Vector DB: Vector Search | 🚀 Highly responsive
-CAND_0010685,91,2.905427623586711,NLP Engineer (6.7y @ Rephrase.ai) | Vector DB: RAG | 🚀 Highly responsive
-CAND_0018888,92,2.9045429419079873,"AI Research Engineer (6.5y @ Razorpay) | Vector DB: pgvector, FAISS | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open"
-CAND_0090155,93,2.9041161836549856,"ML Engineer (5.8y @ Swiggy) | Vector DB: Milvus, Pinecone | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0080589,94,2.9039242212818657,Computer Vision Engineer (5.7y @ Niramai) | Vector DB: RAG
-CAND_0054100,95,2.9037003090894733,"Junior ML Engineer (6.0y @ Zoho) | Vector DB: Vector Search, Pinecone | ⭐ Strong GitHub | ✓ Responsive"
-CAND_0088441,96,2.903548504004956,AI Specialist (6.5y @ Sarvam AI) | Vector DB: Milvus | ↗️ Seniority growth | ✓ GitHub active
-CAND_0042100,97,2.902785132898379,Machine Learning Engineer (7.3y @ Freshworks) | Vector DB: Pinecone | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive
-CAND_0076163,98,2.901611904887848,"NLP Engineer (6.9y @ Ola) | ML: PyTorch, Python, MLOps | ⭐ Strong GitHub | 🚀 Highly responsive"
-CAND_0083879,99,2.901507973486584,Machine Learning Engineer (7.1y @ Ola) | Vector DB: Milvus | ↗️ Seniority growth
-CAND_0054829,100,2.9010305172342594,Computer Vision Engineer (5.7y @ BYJU'S) | Vector DB: Pinecone | ↗️ Seniority growth | ✓ Responsive
+CAND_0043860,1,2.967124715987397,"Junior ML Engineer (6.1y @ Aganitha) | Vector DB: pgvector, Vector Search | ↗️ Seniority growth | 🚀 Highly responsive"
+CAND_0049540,2,2.966802241112883,ML Engineer (6.8y @ Saarthi.ai) | Vector DB: pgvector | 🚀 Highly responsive
+CAND_0072688,3,2.9659660514710176,Data Scientist (6.9y @ Niramai) | Vector DB: Milvus | 🚀 Highly responsive
+CAND_0050454,4,2.95933687493461,AI Engineer (6.8y @ Rephrase.ai) | Vector DB: FAISS | ✓ Responsive
+CAND_0076251,5,2.958105149966106,Search Engineer (7.6y @ Haptik) | Backend: Kafka | ↗️ Seniority growth | ✓ Responsive
+CAND_0053605,6,2.956556113239133,"Senior Software Engineer (ML) (6.9y @ Verloop.io) | Vector DB: pgvector, RAG | ↗️ Seniority growth | 🚀 Highly responsive"
+CAND_0018653,7,2.95572897321385,"ML Engineer (6.5y @ Vedantu) | Vector DB: RAG, Vector Search | ✓ Responsive | ⚠️ Not actively open"
+CAND_0001707,8,2.955393618672848,Data Scientist (5.6y @ Vedantu) | Vector DB: FAISS
+CAND_0098454,9,2.9529488532257315,"AI Specialist (6.6y @ Meesho) | Vector DB: Vector Search, Pinecone | 🚀 Highly responsive"
+CAND_0073007,10,2.9522050373330075,"AI Specialist (5.8y @ Aganitha) | Vector DB: Milvus, FAISS | ✓ GitHub active | 🚀 Highly responsive"
+CAND_0022614,11,2.951495933676313,"Data Scientist (6.0y @ Verloop.io) | Vector DB: Milvus, pgvector | ↗️ Seniority growth | ✓ Responsive"
+CAND_0024878,12,2.950275222504551,AI Specialist (5.7y @ HCL) | Vector DB: pgvector | 🚀 Highly responsive
+CAND_0010408,13,2.948975424215481,Junior ML Engineer (5.7y @ Meesho) | Vector DB: Milvus | ⭐ Strong GitHub
+CAND_0042359,14,2.9488643053733874,"Data Scientist (6.9y @ Aganitha) | Vector DB: Pinecone, pgvector | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open"
+CAND_0052195,15,2.9461303250499333,"Computer Vision Engineer (6.3y @ Sarvam AI) | ML: MLflow, NLP | ⭐ Strong GitHub | ✓ Responsive"
+CAND_0033445,16,2.9446361509882166,ML Engineer (6.8y @ Vedantu) | Vector DB: pgvector | 🚀 Highly responsive
+CAND_0029135,17,2.944303486587445,AI Specialist (5.8y @ Meesho) | Vector DB: FAISS | ↗️ Seniority growth | ✓ Responsive
+CAND_0059017,18,2.9427246019912223,AI Research Engineer (6.8y @ PhonePe) | Vector DB: FAISS | ⭐ Strong GitHub | ✓ Responsive
+CAND_0032089,19,2.942018477977559,"ML Engineer (6.6y @ Saarthi.ai) | Vector DB: Pinecone, Milvus | ✓ Responsive"
+CAND_0003791,20,2.9412854925379417,ML Engineer (6.6y @ Meesho) | Vector DB: pgvector | ✓ GitHub active | ✓ Responsive
+CAND_0036484,21,2.9400778683760707,AI Research Engineer (5.7y @ InMobi) | Vector DB: Milvus | ✓ Responsive
+CAND_0018701,22,2.9393208174669883,Junior ML Engineer (6.0y @ Krutrim) | ML: MLflow | Backend: SQL | ✓ Responsive
+CAND_0098780,23,2.9384347640054607,"AI Research Engineer (5.9y @ Zomato) | Vector DB: Milvus, Pinecone | ✓ Responsive"
+CAND_0091899,24,2.9381748881175014,"Senior Software Engineer (ML) (5.8y @ PhonePe) | Vector DB: FAISS, Milvus | ↗️ Seniority growth | ✓ Responsive | ⚠️ Not actively open"
+CAND_0089381,25,2.936700712482686,"Computer Vision Engineer (6.0y @ Ola) | Vector DB: Pinecone, Milvus | ✓ GitHub active | 🚀 Highly responsive"
+CAND_0098217,26,2.935894740993819,"ML Engineer (6.4y @ Glance) | Vector DB: FAISS, Pinecone | ⭐ Strong GitHub | 🚀 Highly responsive"
+CAND_0060257,27,2.934932403073071,"AI Specialist (5.8y @ Paytm) | Vector DB: Vector Search, Milvus | Backend: SQL | ✓ GitHub active | ✓ Responsive"
+CAND_0093958,28,2.9337016044226933,Junior ML Engineer (5.9y @ Meesho) | Vector DB: FAISS | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open
+CAND_0044262,29,2.931489827324647,"Data Scientist (6.9y @ upGrad) | ML: Python, PyTorch, MLflow | ✓ Responsive"
+CAND_0008295,30,2.9313402022303148,"AI Research Engineer (6.5y @ Razorpay) | ML: Python, MLflow, BentoML | ↗️ Seniority growth | ✓ GitHub active | 🚀 Highly responsive"
+CAND_0043637,31,2.9300635445178473,"Junior ML Engineer (5.5y @ Rephrase.ai) | Vector DB: Milvus, pgvector | ↗️ Seniority growth | 🚀 Highly responsive"
+CAND_0064326,32,2.9286272024718594,"Search Engineer (7.6y @ Sarvam AI) | Vector DB: Milvus, RAG | ✓ GitHub active | 🚀 Highly responsive"
+CAND_0018888,33,2.928548563848601,"AI Research Engineer (6.5y @ Razorpay) | Vector DB: pgvector, FAISS | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open"
+CAND_0064888,34,2.9283920431314043,ML Engineer (5.8y @ Verloop.io) | Vector DB: pgvector | ↗️ Seniority growth | 🚀 Highly responsive
+CAND_0069638,35,2.927653875469743,Computer Vision Engineer (6.2y @ Swiggy) | Vector DB: Pinecone | ✓ Responsive
+CAND_0007567,36,2.926526498159984,AI Specialist (6.1y @ Niramai) | Vector DB: FAISS | ✓ GitHub active | ✓ Responsive
+CAND_0065277,37,2.926379519397448,"Computer Vision Engineer (6.3y @ Aganitha) | Vector DB: Vector Search, Milvus | ✓ GitHub active"
+CAND_0096655,38,2.9257371703562893,Junior ML Engineer (5.9y @ Genpact AI) | Vector DB: RAG | Backend: Spark | ✓ Responsive
+CAND_0008943,39,2.9256519942686214,Computer Vision Engineer (6.0y @ Observe.AI) | ML: NLP | ↗️ Seniority growth | ✓ Responsive
+CAND_0087783,40,2.924726160064293,Senior Software Engineer (ML) (6.7y @ Meesho) | ML: MLOps | Backend: Airflow | ↗️ Seniority growth | ⭐ Strong GitHub | ✓ Responsive | ⚠️ Not actively open
+CAND_0040955,41,2.9239906665939874,Junior ML Engineer (6.6y @ Rephrase.ai) | Vector DB: Vector Search | ↗️ Seniority growth | ✓ Responsive | ⚠️ Not actively open
+CAND_0032216,42,2.9238785925188435,ML Engineer (6.1y @ upGrad) | Vector DB: Vector Search
+CAND_0044222,43,2.9232267444627493,AI Engineer (7.7y @ PolicyBazaar) | Vector DB: Vector Search | ✓ Responsive
+CAND_0073982,44,2.9231773758482738,"Data Scientist (7.0y @ Dream11) | Vector DB: RAG, FAISS | ✓ Responsive"
+CAND_0026942,45,2.922642201617877,"Junior ML Engineer (6.0y @ Verloop.io) | ML: TensorFlow, BentoML, MLflow | ✓ GitHub active | 🚀 Highly responsive"
+CAND_0088378,46,2.9217290693455764,AI Research Engineer (6.0y @ Yellow.ai) | ML: MLOps | ↗️ Seniority growth | ✓ GitHub active | ✓ Responsive
+CAND_0089470,47,2.921586568682259,AI Research Engineer (6.5y @ Zomato) | ML: PyTorch | ↗️ Seniority growth | ✓ Responsive | ⚠️ Not actively open
+CAND_0025335,48,2.921581847945451,Data Scientist (6.6y @ PolicyBazaar) | Vector DB: RAG
+CAND_0070525,49,2.9208607048923843,Senior Software Engineer (ML) (5.4y @ Mad Street Den) | ML: Python | ↗️ Seniority growth | 🚀 Highly responsive
+CAND_0019880,50,2.9194588425020718,"AI Specialist (5.7y @ Aganitha) | ML: NLP, MLOps | ✓ Responsive"
+CAND_0021491,51,2.9194010763745886,AI Research Engineer (6.1y @ Wysa) | Vector DB: Vector Search | ✓ GitHub active | ✓ Responsive
+CAND_0046526,52,2.919088801150977,ML Engineer (5.5y @ Ola) | Vector DB: FAISS | ✓ Responsive
+CAND_0074123,53,2.918572266288162,Data Scientist (6.9y @ CRED) | Vector DB: pgvector | ↗️ Seniority growth
+CAND_0037160,54,2.9182011297379034,Data Scientist (6.0y @ Haptik) | Vector DB: Vector Search | ↗️ Seniority growth | ✓ Responsive
+CAND_0080589,55,2.9174841396324522,Computer Vision Engineer (5.7y @ Niramai) | Vector DB: RAG
+CAND_0069905,56,2.9174404140369186,"Applied ML Engineer (6.6y @ Sarvam AI) | ML: TensorFlow, MLOps, Python | ✓ GitHub active | ✓ Responsive"
+CAND_0039962,57,2.916991369188567,ML Engineer (6.5y @ Paytm) | Vector DB: Pinecone | ✓ Responsive
+CAND_0071939,58,2.9165138821876124,"Data Scientist (6.4y @ Krutrim) | ML: BentoML, NLP | ✓ Responsive"
+CAND_0076035,59,2.9159466228623487,AI Specialist (7.0y @ Swiggy) | Vector DB: RAG | ✓ Responsive
+CAND_0098952,60,2.9147293607249902,"AI Research Engineer (5.5y @ CRED) | ML: NLP, Python | Backend: Airflow | ↗️ Seniority growth | ✓ GitHub active | ✓ Responsive"
+CAND_0082086,61,2.9137179910095807,"Senior Software Engineer (ML) (6.0y @ Razorpay) | Vector DB: FAISS, Pinecone | Backend: Kafka | ↗️ Seniority growth | ⭐ Strong GitHub | 🚀 Highly responsive"
+CAND_0083852,62,2.913557536475788,"Data Scientist (6.0y @ Mad Street Den) | Vector DB: Pinecone, pgvector | ⭐ Strong GitHub | 🚀 Highly responsive"
+CAND_0088049,63,2.9134252223578545,Junior ML Engineer (5.9y @ Freshworks) | Backend: Kafka | ✓ Responsive | ⚠️ Not actively open
+CAND_0033987,64,2.9129468099976514,ML Engineer (6.8y @ Wysa) | Vector DB: FAISS | ↗️ Seniority growth | ✓ Responsive
+CAND_0077067,65,2.9110667770020475,"AI Specialist (5.4y @ PolicyBazaar) | Vector DB: Pinecone, Vector Search | 🚀 Highly responsive"
+CAND_0058412,66,2.911005374615107,"Senior Software Engineer (ML) (6.6y @ InMobi) | Vector DB: Milvus, RAG | ↗️ Seniority growth | ✓ GitHub active | ⚠️ Not actively open"
+CAND_0029671,67,2.910844118945209,Data Scientist (5.7y @ BYJU'S) | Vector DB: Pinecone | Backend: Kafka | ↗️ Seniority growth
+CAND_0002793,68,2.910783070827441,"AI Specialist (5.5y @ Meesho) | Vector DB: pgvector, FAISS | ⭐ Strong GitHub | ✓ Responsive | ⚠️ Not actively open"
+CAND_0062247,69,2.910714797215345,"AI Engineer (7.3y @ Google) | Vector DB: Pinecone, Vector Search | ✓ GitHub active | ✓ Responsive"
+CAND_0008202,70,2.9103134658470395,"Senior Software Engineer (ML) (5.7y @ Yellow.ai) | Vector DB: FAISS, RAG | ↗️ Seniority growth | ⚠️ Not actively open"
+CAND_0046313,71,2.9101700189071007,Senior Software Engineer (ML) (5.8y @ Flipkart) | Vector DB: pgvector | ↗️ Seniority growth | ✓ GitHub active
+CAND_0093883,72,2.9096412721335887,AI Research Engineer (5.0y @ Wysa) | Vector DB: Milvus | ↗️ Seniority growth | ✓ Responsive
+CAND_0007009,73,2.908939651720965,Recommendation Systems Engineer (7.9y @ Wysa) | ML: Python | ✓ GitHub active | ✓ Responsive
+CAND_0010149,74,2.9079480563576374,"ML Engineer (6.9y @ Glance) | Vector DB: Milvus, Vector Search | ↗️ Seniority growth | 🚀 Highly responsive"
+CAND_0019159,75,2.907071507137703,"ML Engineer (6.1y @ Genpact AI) | Vector DB: Vector Search, Milvus | Backend: Spark | ✓ Responsive | ⚠️ Not actively open"
+CAND_0010685,76,2.906836211404831,NLP Engineer (6.7y @ Rephrase.ai) | Vector DB: RAG | 🚀 Highly responsive
+CAND_0088441,77,2.905802781430326,AI Specialist (6.5y @ Sarvam AI) | Vector DB: Milvus | ↗️ Seniority growth | ✓ GitHub active
+CAND_0097079,78,2.9053603499486065,Computer Vision Engineer (5.7y @ Freshworks) | ML: NLP | ✓ GitHub active | ✓ Responsive
+CAND_0062184,79,2.9022214718016888,Computer Vision Engineer (5.7y @ Aganitha) | Vector DB: Vector Search | ✓ Responsive | ⚠️ Not actively open
+CAND_0030953,80,2.9017031339963792,"Search Engineer (7.8y @ Nykaa) | Vector DB: pgvector, RAG | ✓ Responsive | ⚠️ Not actively open"
+CAND_0065878,81,2.9006608890273022,"Senior Data Scientist (7.8y @ Niramai) | Vector DB: RAG, pgvector | ↗️ Seniority growth"
+CAND_0069771,82,2.8996623157326322,"Junior ML Engineer (5.7y @ Sarvam AI) | Vector DB: FAISS, Vector Search"
+CAND_0082489,83,2.897893192440805,ML Engineer (5.3y @ InMobi) | Vector DB: RAG | ⭐ Strong GitHub | ✓ Responsive | ⚠️ Not actively open
+CAND_0083879,84,2.8973343414047363,Machine Learning Engineer (7.1y @ Ola) | Vector DB: Milvus | ↗️ Seniority growth
+CAND_0033179,85,2.8972955126573234,"AI Research Engineer (6.9y @ Wipro) | ML: PyTorch, MLOps, MLflow | Backend: Airflow | ↗️ Seniority growth | 🚀 Highly responsive"
+CAND_0032179,86,2.8965395669627054,Computer Vision Engineer (6.4y @ InMobi) | Vector DB: Vector Search | ⚠️ Not actively open
+CAND_0046621,87,2.8938133251632374,"AI Research Engineer (6.6y @ upGrad) | Vector DB: Pinecone, pgvector"
+CAND_0003100,88,2.893671951607577,AI Specialist (5.5y @ Verloop.io) | Vector DB: Milvus | ↗️ Seniority growth | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open
+CAND_0088385,89,2.8934213814978302,Computer Vision Engineer (7.0y @ Swiggy) | Vector DB: Milvus | ↗️ Seniority growth | ✓ GitHub active | ✓ Responsive
+CAND_0064256,90,2.892746154428417,"Junior ML Engineer (6.4y @ BYJU'S) | ML: PyTorch, MLOps, Python | 🚀 Highly responsive"
+CAND_0035653,91,2.889660751878242,"Data Scientist (5.6y @ Swiggy) | Vector DB: Vector Search, RAG | Backend: Kafka | ✓ GitHub active"
+CAND_0026640,92,2.8894467818242395,Computer Vision Engineer (6.1y @ Observe.AI) | Vector DB: Vector Search
+CAND_0040820,93,2.8892019901063524,"Senior Software Engineer (ML) (5.5y @ Meesho) | Vector DB: Pinecone, Vector Search | Backend: Kafka | ↗️ Seniority growth | ✓ GitHub active | ✓ Responsive | ⚠️ Not actively open"
+CAND_0074731,94,2.8890874213182864,"Data Scientist (6.6y @ InMobi) | ML: PyTorch, TensorFlow, Python | ⭐ Strong GitHub | ✓ Responsive"
+CAND_0011687,95,2.888713582302424,Senior NLP Engineer (7.8y @ Niramai) | Vector DB: FAISS | ↗️ Seniority growth | ⭐ Strong GitHub | 🚀 Highly responsive
+CAND_0067866,96,2.8883174591436602,Senior Software Engineer (ML) (6.4y @ Tech Mahindra) | Vector DB: pgvector | ↗️ Seniority growth | ✓ Responsive
+CAND_0079387,97,2.8882183900864953,AI Engineer (6.9y @ Microsoft) | Vector DB: Vector Search | ✓ GitHub active | 🚀 Highly responsive
+CAND_0004402,98,2.888077364187005,"AI Research Engineer (6.0y @ Yellow.ai) | ML: PyTorch, BentoML | 🚀 Highly responsive"
+CAND_0028422,99,2.8873576741667764,"Junior ML Engineer (5.5y @ Yellow.ai) | Vector DB: Pinecone, pgvector | ⭐ Strong GitHub | ✓ Responsive"
+CAND_0002120,100,2.8835023227186207,"ML Engineer (6.5y @ HCL) | Vector DB: RAG, Pinecone | Backend: PostgreSQL | ✓ GitHub active | ✓ Responsive"

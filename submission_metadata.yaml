@@ -19,7 +19,7 @@ team_members:
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/YOUR_USERNAME/india-runs-challenge" # Replace with your GitHub repo URL
+github_repo: "https://github.com/rakesh-s-omen/india-runs-challenge" # Replace with your GitHub repo URL
 sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker" # Replace with your HF Space link
 
 reproduce_command: "python -m src.main data/candidates.jsonl output/submission.csv"

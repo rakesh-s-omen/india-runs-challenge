@@ -13,26 +13,28 @@ def load_jsonl(filepath):
     return data
 
 def run_shre(candidates_path, labeled_path, out_path):
-    print("=== RUNNING SHRE (Primary ML Pipeline) ===")
+    print("=== RUNNING SHRE (Validated ML Pipeline - Competition Grade) ===")
     from src.shre.stage1_filter import FastFilter
     from src.shre.stage2_features import FeatureEngineer
-    from src.shre.stage3_ranking_advanced import train_and_predict
+    from src.shre.stage3_ranking_validated import train_and_predict_validated
     from src.shre.stage4_submit import export_submission
 
     candidates = load_jsonl(candidates_path)
-    
+
     ff = FastFilter()
     viable = ff.filter(candidates)
     print(f"Stage 1: Filtered {len(candidates)} down to {len(viable)} viable candidates.")
-    
+
     fe = FeatureEngineer()
     feature_matrix = fe.compute_features(viable)
     feature_names = list(feature_matrix[0][1].keys())
     print(f"Stage 2: Extracted {len(feature_names)} features.")
-    
-    scores = train_and_predict(labeled_path, feature_matrix, feature_names)
-    print("Stage 3: Advanced Ensemble prediction complete.")
-    
+
+    scores, metadata = train_and_predict_validated(labeled_path, feature_matrix, feature_names)
+    print("Stage 3: Validated Ensemble prediction complete.")
+    print(f"  - Test Accuracy: {metadata.get('test_accuracy', 'N/A'):.4f}")
+    print(f"  - Test F1-Score: {metadata.get('test_f1', 'N/A'):.4f}")
+
     export_submission(viable, scores, out_path)
 
 def run_ctae(candidates_path, out_path):

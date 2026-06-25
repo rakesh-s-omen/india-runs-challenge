@@ -70,10 +70,10 @@ def test_stage2_features(candidates):
     return features, feature_names
 
 def test_stage3_ranking(feature_names):
-    """Test Stage 3: Model Training and Prediction"""
-    print_header("STAGE 3: MODEL TRAINING & EVALUATION")
+    """Test Stage 3: Model Training and Prediction (VALIDATED MODEL)"""
+    print_header("STAGE 3: MODEL TRAINING & EVALUATION (VALIDATED)")
 
-    from src.shre.stage3_ranking_advanced import train_and_predict
+    from src.shre.stage3_ranking_validated import train_and_predict_validated
 
     labeled_path = 'labeling/combined_labels.json'
 
@@ -91,8 +91,10 @@ def test_stage3_ranking(feature_names):
     print(f"Feature matrix shape: {len(feature_matrix)} candidates × {len(feature_names)} features")
 
     try:
-        scores = train_and_predict(labeled_path, feature_matrix, feature_names)
+        scores, metadata = train_and_predict_validated(labeled_path, feature_matrix, feature_names)
         print(f"[OK] Model training and prediction successful")
+        print(f"[VALIDATED] Test Accuracy: {metadata.get('test_accuracy', 'N/A'):.4f}")
+        print(f"[VALIDATED] Test F1-Score: {metadata.get('test_f1', 'N/A'):.4f}")
         print(f"  - Generated {len(scores)} predictions")
         print(f"  - Score range: [{np.min(scores):.2f}, {np.max(scores):.2f}]")
         print(f"  - Mean score: {np.mean(scores):.4f}")
