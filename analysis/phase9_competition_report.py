@@ -16,10 +16,9 @@ def generate_competition_report(output_dir='analysis_results'):
     print("\n" + "="*100)
     print("PHASE 9: COMPILING COMPETITION REPORT")
     print("="*100)
-    
+
     report_path = os.path.join(output_dir, 'COMPETITION_REPORT.md')
-    
-    # Load summaries helper
+
     def load_json(name):
         path = os.path.join(output_dir, name)
         if os.path.exists(path):
@@ -27,7 +26,6 @@ def generate_competition_report(output_dir='analysis_results'):
                 return json.load(f)
         return {}
 
-    # Load all summaries
     p1 = load_json('phase1_analysis.json')
     p2 = load_json('phase2_summary.json')
     p3_exps = load_json('phase3_candidate_explanations.json')
@@ -47,7 +45,6 @@ def generate_competition_report(output_dir='analysis_results'):
             lines.append("| " + " | ".join(map(str, row.values)) + " |")
         return "\n".join(lines)
 
-    # Load CSV tables
     def load_csv_markdown(name):
         path = os.path.join(output_dir, name)
         if os.path.exists(path):
@@ -61,7 +58,6 @@ def generate_competition_report(output_dir='analysis_results'):
     abl_models = load_csv_markdown('ablation_model_comparison.csv')
     abl_groups = load_csv_markdown('ablation_feature_groups.csv')
 
-    # Build report text
     report_text = f"""# Staged Hybrid Ranking Engine (SHRE)
 ## Comprehensive Scientific Validation & Competition Report
 *Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*
@@ -69,7 +65,7 @@ def generate_competition_report(output_dir='analysis_results'):
 ---
 
 ## 1. Executive Summary
-The Staged Hybrid Ranking Engine (SHRE) is a competition-grade recruitment pipeline designed to rank candidates based on multi-dimensional relevance scores while remaining robust to adversarial data (honeypots). This report provides empirical, leakage-free validation of the system's performance, stability, feature relevance, explainability, and ranking quality. 
+The Staged Hybrid Ranking Engine (SHRE) is a competition-grade recruitment pipeline designed to rank candidates based on multi-dimensional relevance scores while remaining robust to adversarial data (honeypots). This report provides empirical, leakage-free validation of the system's performance, stability, feature relevance, explainability, and ranking quality.
 
 Our final ensemble model achieves an **accuracy of {p7.get('overall_accuracy', 0.9067)*100:.2f}%** on a completely unseen test holdout set, with an **NDCG@100 score of {p8.get('ndcg_at_100', 0.9591):.4f}**, indicating strong ranking alignment on the held-out set.
 
@@ -116,7 +112,7 @@ We evaluated feature importance across all individual estimators and the ensembl
 
 ### Key Findings
 - **Dominant Features:** The top 5 features by gain importance are: `{", ".join(p2.get('top_5_features', []))}`.
-- **Interpretation:** Recruiting signal is highly concentrated in profile completeness (e.g. `summary_length`), skill depth (`avg_skill_duration_months`), and domain longevity (`domain_x_years`). 
+- **Interpretation:** Recruiting signal is highly concentrated in profile completeness (e.g. `summary_length`), skill depth (`avg_skill_duration_months`), and domain longevity (`domain_x_years`).
 - **Redundant Features:** Feature correlation analysis identified very few highly collinear pairs, confirming that SelectKBest successfully pruned redundant features.
 
 ---
@@ -175,13 +171,12 @@ We tested the SHRE model against **{p6.get('num_honeypot_samples', 250)} synthet
     for stats in p6.get('type_statistics', []):
         report_text += f"  - **{stats.get('type')}:** {stats.get('detection_rate', 0)*100:.1f}% detected (Avg Confidence: {stats.get('avg_confidence', 0):.4f})\n"
 
-    # Data-driven strengths/weaknesses (no hardcoded claims)
     _types = p6.get('type_statistics', [])
     _strong = [t['type'] for t in _types if t.get('detection_rate', 0) >= 0.99]
     _weak = sorted([t for t in _types if t.get('detection_rate', 0) < 0.70],
                    key=lambda t: t.get('detection_rate', 0))
     _strong_str = ", ".join(f"`{s}`" for s in _strong) if _strong else "none of the categories at 100%"
-    _weak_str = "; ".join(f"`{t['type']}` ({t.get('detection_rate',0)*100:.0f}%)" for t in _weak) \
+    _weak_str = "; ".join(f"`{t['type']}` ({t.get('detection_rate',0)*100:.0f}%)" for t in _weak)\
                 if _weak else "no category below 70%"
 
     report_text += f"""
@@ -254,7 +249,7 @@ Assessed against the evidence in this report, not aspiration.
 
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report_text)
-    
+
     print(f"Saved final report to {report_path}")
     print("="*100 + "\n")
     return report_text

@@ -23,7 +23,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     """
     SHAP-based explainability analysis.
@@ -42,7 +41,6 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     print("PHASE 3: SHAP EXPLAINABILITY")
     print("="*100)
 
-    # Feature selection and preprocessing
     print("\n[3.1] Preprocessing data...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -52,11 +50,9 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # Apply SMOTE
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_aug, y_aug = smote.fit_resample(X_scaled, y)
 
-    # Train ensemble
     print("[3.2] Training ensemble model...")
     xgb_model = xgb.XGBClassifier(
         n_estimators=200, max_depth=6, learning_rate=0.02,
@@ -83,19 +79,14 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
         estimators=[('xgb', xgb_model), ('lgb', lgb_model), ('cb', cb_model)],
         voting='soft'
     )
-    # VotingClassifier over pre-fit estimators is not itself fitted.
+
     ensemble.fit(X_aug, y_aug)
 
-    # ===== SHAP ANALYSIS =====
     print("[3.3] Computing SHAP values (this may take several minutes)...")
 
-    # Use TreeExplainer for XGBoost
     explainer_xgb = shap.TreeExplainer(xgb_model)
     shap_values_xgb = explainer_xgb.shap_values(X_aug)
 
-    # Get class 3 (highest relevance) SHAP values. Depending on the
-    # shap/xgboost version this is either a list[n_classes] of (n,f) arrays or a
-    # single (n, f, n_classes) ndarray. Handle both robustly.
     if isinstance(shap_values_xgb, list):
         shap_class3 = np.asarray(shap_values_xgb[-1])
     else:
@@ -104,10 +95,8 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
 
     print("[3.4] Creating SHAP summary plots...")
 
-    # ===== VISUALIZATION 1: SHAP Summary Plot (Bar) =====
     fig, ax = plt.subplots(figsize=(12, 8))
 
-    # Mean absolute SHAP values
     mean_abs_shap = np.abs(shap_class3).mean(axis=0)
     feature_importance_shap = pd.DataFrame({
         'Feature': selected_features,
@@ -125,8 +114,6 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase3_shap_summary.png")
     plt.close()
 
-    # ===== VISUALIZATION 2: SHAP Summary Plot (Density) =====
-    # Create custom summary plot
     shap.summary_plot(shap_class3, X_aug, feature_names=selected_features,
                      plot_type="violin", show=False)
     plt.tight_layout()
@@ -134,7 +121,6 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase3_shap_density.png")
     plt.close()
 
-    # ===== VISUALIZATION 3: SHAP Dependence Plots (Top 5 Features) =====
     top_5_indices = np.argsort(mean_abs_shap)[-5:]
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
@@ -149,7 +135,6 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
         ax.set_title(f'{selected_features[feat_idx]} vs SHAP', fontsize=10)
         ax.grid(True, alpha=0.3)
 
-    # Hide unused subplot
     axes[-1].set_visible(False)
 
     plt.suptitle('SHAP Dependence Plots (Top 5 Features)', fontsize=13, fontweight='bold', y=1.00)
@@ -158,15 +143,12 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase3_shap_dependence.png")
     plt.close()
 
-    # ===== INDIVIDUAL CANDIDATE EXPLANATIONS =====
     print("\n[3.5] Generating individual candidate explanations...")
 
-    # Get predictions
     y_pred = ensemble.predict(X_aug)
     y_proba = ensemble.predict_proba(X_aug)
     confidence = np.max(y_proba, axis=1)
 
-    # Find best and worst ranked candidates
     best_idx = np.argmax(confidence)
     worst_idx = np.argmin(confidence)
 
@@ -179,9 +161,8 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
         )
         explanations.append(explanation)
 
-        # Save waterfall plot
         shap_val = shap_class3[idx]
-        # expected_value may be a scalar, list, or ndarray (one per class).
+
         _ev = explainer_xgb.expected_value
         base_value = float(np.atleast_1d(_ev)[-1])
         shap_explanation = shap.Explanation(
@@ -201,19 +182,15 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
         print(f"OK: Saved: phase3_waterfall_{label}.png")
         plt.close()
 
-    # Save explanations as JSON
     with open(os.path.join(output_dir, 'phase3_candidate_explanations.json'), 'w') as f:
         json.dump(explanations, f, indent=2)
 
-    # Print explanations
     print("\n[3.6] Individual Candidate Explanations:\n")
     for exp in explanations:
         print_candidate_explanation(exp)
 
-    # ===== FEATURE INTERACTION ANALYSIS =====
     print("\n[3.7] Analyzing feature interactions...")
 
-    # Get top contributing features for best candidate
     best_shap = shap_class3[best_idx]
     top_features_idx = np.argsort(np.abs(best_shap))[-5:]
 
@@ -253,11 +230,9 @@ def explain_with_shap(X, y, feature_names, output_dir='analysis_results'):
 
     return explanations, interaction_summary
 
-
 def generate_candidate_explanation(idx, features, pred_class, proba, shap_vals, feature_names, label):
     """Generate human-readable explanation for a candidate."""
 
-    # Get top contributing features (both positive and negative)
     top_indices = np.argsort(np.abs(shap_vals))[-5:]
 
     positive_features = []
@@ -286,7 +261,6 @@ def generate_candidate_explanation(idx, features, pred_class, proba, shap_vals, 
         'positive_factors': positive_features,
         'negative_factors': negative_features,
     }
-
 
 def print_candidate_explanation(explanation):
     """Print human-readable candidate explanation."""

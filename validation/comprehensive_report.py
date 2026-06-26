@@ -7,7 +7,6 @@ import json
 import os
 from datetime import datetime
 
-
 def generate_comprehensive_report(validation_results, output_dir='validation_results'):
     """
     Generate comprehensive validation report addressing all 8 critical issues.
@@ -24,7 +23,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
         'sections': {}
     }
 
-    # 1. DATA LEAKAGE FIX
     print("\n[1] DATA LEAKAGE PREVENTION")
     print("-" * 100)
     report['sections']['data_leakage'] = {
@@ -37,7 +35,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
     print(report['sections']['data_leakage']['issue'])
     print(f"Status: {report['sections']['data_leakage']['status']}")
 
-    # 2. PROPER TRAIN/VAL/TEST SPLIT
     print("\n[2] TRAIN/VAL/TEST SPLIT (70/15/15)")
     print("-" * 100)
     if 'split_validation' in validation_results:
@@ -56,7 +53,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'IMPLEMENTED - See stage3_ranking_validated.py:75-81'
         }
 
-    # 3. LEARNING CURVES
     print("\n[3] LEARNING CURVES - DATASET SUFFICIENCY PROOF")
     print("-" * 100)
     if 'learning_curves' in validation_results:
@@ -65,7 +61,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
         for size, acc in zip(curves.get('sample_sizes', []), curves.get('accuracies', [])):
             print(f"  {size:3d} samples: {acc:.4f}")
 
-        # Check if curve plateaus
         accs = curves.get('accuracies', [])
         plateaus = (accs[-1] - accs[-2]) < 0.01 if len(accs) > 1 else False
 
@@ -81,7 +76,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'TO BE GENERATED - Run validation/learning_curves.py'
         }
 
-    # 4. RANKING METRICS
     print("\n[4] RANKING METRICS - TOP 100 QUALITY")
     print("-" * 100)
     if 'ranking_metrics' in validation_results:
@@ -96,7 +90,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'TO BE GENERATED - Run validation/ranking_metrics.py'
         }
 
-    # 5. ABLATION STUDY
     print("\n[5] ABLATION STUDY - ENSEMBLE JUSTIFICATION")
     print("-" * 100)
     if 'ablation_study' in validation_results:
@@ -119,7 +112,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'TO BE GENERATED - Run validation/ablation_study.py'
         }
 
-    # 6. HONEYPOT VALIDATION
     print("\n[6] HONEYPOT DETECTION VALIDATION")
     print("-" * 100)
     if 'honeypot_validation' in validation_results:
@@ -135,7 +127,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'TO BE GENERATED - Run validation/honeypot_validation.py'
         }
 
-    # 7. FEATURE SELECTION
     print("\n[7] FEATURE SELECTION - 78 FEATURES JUSTIFIED")
     print("-" * 100)
     if 'feature_selection' in validation_results:
@@ -151,7 +142,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'INTEGRATED IN stage3_ranking_validated.py'
         }
 
-    # 8. EXTERNAL VALIDATION (Holdout Test Set)
     print("\n[8] EXTERNAL VALIDATION - HOLDOUT TEST SET")
     print("-" * 100)
     if 'test_set_performance' in validation_results:
@@ -166,7 +156,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
             'status': 'AVAILABLE IN stage3_ranking_validated.py - 15% holdout test set'
         }
 
-    # Summary
     print("\n" + "="*100)
     print("ASSESSMENT SUMMARY")
     print("="*100)
@@ -210,7 +199,6 @@ def generate_comprehensive_report(validation_results, output_dir='validation_res
 
     print("\n" + "="*100)
 
-    # Save comprehensive report
     with open(os.path.join(output_dir, 'COMPREHENSIVE_REPORT.json'), 'w') as f:
         json.dump(report, f, indent=2)
 

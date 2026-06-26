@@ -12,7 +12,6 @@ from imblearn.over_sampling import SMOTE
 import json
 import os
 
-
 def generate_learning_curves(X, y, feature_names, output_dir='validation_results'):
     """
     Generate learning curves showing accuracy vs training set size.
@@ -24,7 +23,6 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
     print("LEARNING CURVES - Proving Dataset Sufficiency")
     print("="*80)
 
-    # Test on increasing sample sizes
     sample_sizes = [50, 100, 150, 200, 300, int(len(y) * 0.7)]
 
     train_scores = []
@@ -33,11 +31,9 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
     for size in sample_sizes:
         print(f"\nTesting with {size} training samples...")
 
-        # Stratified sample
         indices = np.random.RandomState(42).choice(len(y), size, replace=False)
         X_sample, y_sample = X[indices], y[indices]
 
-        # Ensure k_neighbors is valid for SMOTE
         min_class_count = min(np.bincount(y_sample))
         if min_class_count > 1:
             k_neighbors = min(3, min_class_count - 1)
@@ -46,7 +42,6 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
         else:
             X_aug, y_aug = X_sample, y_sample
 
-        # Train ensemble
         xgb_model = xgb.XGBClassifier(
             n_estimators=100, max_depth=6, learning_rate=0.02,
             subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -69,7 +64,6 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
             voting='soft'
         )
 
-        # 5-fold CV
         skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         fold_scores = []
 
@@ -89,7 +83,6 @@ def generate_learning_curves(X, y, feature_names, output_dir='validation_results
 
         print(f"  Accuracy: {mean_score:.4f} (+-{std_score:.4f})")
 
-    # Save learning curve data
     curve_data = {
         'sample_sizes': sample_sizes,
         'accuracies': [float(s) for s in train_scores],

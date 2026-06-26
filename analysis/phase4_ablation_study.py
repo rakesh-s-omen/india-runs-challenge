@@ -24,7 +24,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     """
     Ablation Study with two components:
@@ -37,7 +36,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     print("PHASE 4: ABLATION STUDY")
     print("="*100)
 
-    # Feature selection
     print("\n[4.1] Feature selection and preprocessing...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -47,13 +45,11 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # ===== PART A: MODEL COMPARISON =====
     print("\n[4.2] Part A: Model Comparison")
     print("Comparing individual models vs ensemble...\n")
 
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-    # Accumulate per-fold scores for every model, then average across folds.
     model_names = ['XGBoost', 'LightGBM', 'CatBoost', 'Ensemble']
     fold_scores = {m: {'Accuracy': [], 'Precision': [], 'Recall': [], 'F1_Score': []}
                    for m in model_names}
@@ -62,11 +58,9 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         X_train, X_val = X_scaled[train_idx], X_scaled[val_idx]
         y_train, y_val = y[train_idx], y[val_idx]
 
-        # Apply SMOTE
         smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
         X_train_aug, y_train_aug = smote.fit_resample(X_train, y_train)
 
-        # Train models
         xgb_model = xgb.XGBClassifier(
             n_estimators=200, max_depth=6, learning_rate=0.02,
             subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -88,14 +82,12 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         lgb_model.fit(X_train_aug, y_train_aug)
         cb_model.fit(X_train_aug, y_train_aug)
 
-        # Predictions
         models = {
             'XGBoost': xgb_model,
             'LightGBM': lgb_model,
             'CatBoost': cb_model,
         }
 
-        # Ensemble must be fit explicitly (wrapping pre-fit estimators is not enough)
         ensemble = VotingClassifier(
             estimators=[('xgb', xgb_model), ('lgb', lgb_model), ('cb', cb_model)],
             voting='soft'
@@ -113,7 +105,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
             fold_scores[model_name]['F1_Score'].append(
                 f1_score(y_val, y_pred, average='macro', zero_division=0))
 
-    # Average across folds
     model_summary = pd.DataFrame({
         'Model': model_names,
         'Accuracy': [np.mean(fold_scores[m]['Accuracy']) for m in model_names],
@@ -126,7 +117,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     print("\n[4.3] Model Comparison Results:")
     print(model_summary.to_string(index=False))
 
-    # ===== VISUALIZATION 1: Model Comparison =====
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
     metrics = ['Accuracy', 'Precision', 'Recall', 'F1_Score']
@@ -136,7 +126,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         ax = axes[idx // 2, idx % 2]
         bars = ax.bar(model_summary['Model'], model_summary[metric], color=colors)
 
-        # Highlight ensemble
         bars[-1].set_color('#06A77D')
         bars[-1].set_edgecolor('black')
         bars[-1].set_linewidth(2)
@@ -146,7 +135,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         ax.set_ylim([0.7, 1.0])
         ax.grid(True, alpha=0.3, axis='y')
 
-        # Add value labels
         for bar in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -159,13 +147,9 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     print(f"\nOK: Saved: phase4_model_comparison.png")
     plt.close()
 
-    # ===== PART B: FEATURE GROUP ANALYSIS =====
     print("\n[4.4] Part B: Feature Group Analysis")
     print("Analyzing contribution of different feature groups...\n")
 
-    # Define feature groups aligned with the four engineered families in the
-    # FeatureEngineer (experience/trajectory, technical/skill+domain,
-    # engagement/recruiter, and the explicit interaction "*_x_*" features).
     def _match(keys):
         return [f for f in selected_features if any(k in f.lower() for k in keys)]
 
@@ -189,7 +173,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         'interaction': interaction,
     }
 
-    # Ensure all features are accounted for (anything unmatched -> 'other')
     all_in_groups = set()
     for group_features in feature_groups.values():
         all_in_groups.update(group_features)
@@ -211,7 +194,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
         feature_group_results['Feature_Group'].append(group_name)
         feature_group_results['Num_Features'].append(len(features))
 
-    # Test each feature group + all features
     test_groups = list(feature_groups.keys()) + ['all']
 
     for group_to_test in test_groups:
@@ -232,11 +214,9 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
 
             y_train, y_val = y[train_idx], y[val_idx]
 
-            # Apply SMOTE
             smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
             X_train_aug, y_train_aug = smote.fit_resample(X_train_group, y_train)
 
-            # Train ensemble with this feature group
             xgb_m = xgb.XGBClassifier(
                 n_estimators=150, max_depth=6, learning_rate=0.02,
                 subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -268,12 +248,12 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
             accs.append(accuracy_score(y_val, y_pred))
             f1s.append(f1_score(y_val, y_pred, average='macro', zero_division=0))
 
-        if accs:  # Only if we had valid folds
+        if accs:
             if group_to_test != 'all':
                 feature_group_results['Accuracy'].append(np.mean(accs))
                 feature_group_results['F1_Score'].append(np.mean(f1s))
             else:
-                # Insert at beginning for "all" features
+
                 feature_group_results['Feature_Group'].insert(0, 'All Features')
                 feature_group_results['Num_Features'].insert(0, len(selected_features))
                 feature_group_results['Accuracy'].insert(0, np.mean(accs))
@@ -286,10 +266,8 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
 
     feature_group_df.to_csv(os.path.join(output_dir, 'ablation_feature_groups.csv'), index=False)
 
-    # ===== VISUALIZATION 2: Feature Group Impact =====
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-    # Accuracy
     axes[0].barh(feature_group_df['Feature_Group'], feature_group_df['Accuracy'],
                 color='#2E86AB', alpha=0.8)
     axes[0].set_xlabel('Accuracy', fontsize=11, fontweight='bold')
@@ -297,7 +275,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     axes[0].grid(True, alpha=0.3, axis='x')
     axes[0].set_xlim([0.7, 0.95])
 
-    # F1 Score
     axes[1].barh(feature_group_df['Feature_Group'], feature_group_df['F1_Score'],
                 color='#A23B72', alpha=0.8)
     axes[1].set_xlabel('Macro F1 Score', fontsize=11, fontweight='bold')
@@ -312,7 +289,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     print(f"\nOK: Saved: phase4_feature_groups.png")
     plt.close()
 
-    # ===== ABLATION SUMMARY =====
     print("\n[4.6] Ablation Study Summary:")
 
     ensemble_acc = model_summary[model_summary['Model'] == 'Ensemble']['Accuracy'].values[0]
@@ -329,7 +305,6 @@ def run_ablation_study(X, y, feature_names, output_dir='analysis_results'):
     worst_group = feature_group_df.iloc[-1] if len(feature_group_df) > 1 else best_group
     print(f"  Worst Individual Group:     {worst_group['Feature_Group']} (Acc: {worst_group['Accuracy']:.4f})")
 
-    # Save ablation summary
     _indiv = model_summary[model_summary['Model'] != 'Ensemble']
     best_individual_name = _indiv.loc[_indiv['Accuracy'].idxmax(), 'Model']
     summary = {

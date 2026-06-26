@@ -14,36 +14,31 @@ import json
 import numpy as np
 from datetime import datetime
 
-# Fix unicode on Windows
 if sys.platform == 'win32':
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# Add parent directory to sys.path to resolve imports correctly
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
-
 
 def print_header(text):
     print(f"\n{'='*100}")
     print(f" {text}")
     print(f"{'='*100}\n")
 
-
 def run_all_validations():
     """Run all validation studies"""
     print_header("COMPREHENSIVE VALIDATION SUITE - COMPETITION GRADE")
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    # Create output directory
     output_dir = 'validation_results'
     os.makedirs(output_dir, exist_ok=True)
 
     validation_results = {}
 
     try:
-        # Load labeled data and feature matrix
+
         print("\nSETUP: Loading data...")
         import json
         from src.shre.stage2_features import FeatureEngineer
@@ -67,7 +62,6 @@ def run_all_validations():
 
         print(f"OK: Loaded {len(y)} labeled samples with {X.shape[1]} features")
 
-        # 1. LEARNING CURVES
         print_header("VALIDATION 1: LEARNING CURVES")
         try:
             from validation.learning_curves import generate_learning_curves
@@ -79,13 +73,10 @@ def run_all_validations():
             import traceback
             traceback.print_exc()
 
-        # 2. RANKING METRICS
         print_header("VALIDATION 2: RANKING METRICS")
         try:
             from validation.ranking_metrics import evaluate_ranking_metrics
 
-            # For ranking metrics, we need probabilities from the model
-            # Use CV predictions as proxy
             from sklearn.model_selection import StratifiedKFold
             from sklearn.ensemble import VotingClassifier
             from sklearn.preprocessing import StandardScaler
@@ -95,19 +86,15 @@ def run_all_validations():
             import lightgbm as lgb
             from catboost import CatBoostClassifier
 
-            # Feature selection
             selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
             X_selected = selector.fit_transform(X, y)
 
-            # Scale
             scaler = StandardScaler()
             X_scaled = scaler.fit_transform(X_selected)
 
-            # SMOTE
             smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
             X_aug, y_aug = smote.fit_resample(X_scaled, y)
 
-            # Get predictions via CV
             skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
             y_pred_proba_cv = np.zeros_like(y_aug, dtype=float)
 
@@ -136,7 +123,7 @@ def run_all_validations():
 
                 ensemble.fit(X_train, y_train)
                 y_proba = ensemble.predict_proba(X_val)
-                # Compute expected relevance score: P(1)*1 + P(2)*2 + P(3)*3
+
                 expected_score = y_proba[:, 1] * 1.0 + y_proba[:, 2] * 2.0 + y_proba[:, 3] * 3.0
                 y_pred_proba_cv[val_idx] = expected_score
 
@@ -148,7 +135,6 @@ def run_all_validations():
             import traceback
             traceback.print_exc()
 
-        # 3. ABLATION STUDY
         print_header("VALIDATION 3: ABLATION STUDY")
         try:
             from validation.ablation_study import run_ablation_study
@@ -160,7 +146,6 @@ def run_all_validations():
             import traceback
             traceback.print_exc()
 
-        # 4. HONEYPOT VALIDATION
         print_header("VALIDATION 4: HONEYPOT DETECTION")
         try:
             from validation.honeypot_validation import validate_honeypot_detection
@@ -172,7 +157,6 @@ def run_all_validations():
             import traceback
             traceback.print_exc()
 
-        # 5. COMPREHENSIVE REPORT
         print_header("VALIDATION 5: COMPREHENSIVE REPORT")
         try:
             from validation.comprehensive_report import generate_comprehensive_report
@@ -191,7 +175,6 @@ def run_all_validations():
         traceback.print_exc()
         return False
 
-    # Summary
     print_header("VALIDATION SUITE COMPLETE")
     print(f"Ended: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"\nOutput files generated in: validation_results/")
@@ -215,7 +198,6 @@ def run_all_validations():
     print("="*100 + "\n")
 
     return True
-
 
 if __name__ == "__main__":
     success = run_all_validations()

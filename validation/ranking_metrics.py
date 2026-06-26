@@ -7,14 +7,12 @@ import numpy as np
 import json
 import os
 
-
 def dcg(relevances, k=100):
     """Discounted Cumulative Gain"""
     relevances = np.array(relevances)[:k]
     gains = 2 ** (relevances) - 1
     discounts = np.log2(np.arange(len(gains)) + 2)
     return np.sum(gains / discounts)
-
 
 def ndcg(y_true, y_pred_proba, k=100):
     """Normalized DCG@K"""
@@ -27,7 +25,6 @@ def ndcg(y_true, y_pred_proba, k=100):
     if ideal_dcg == 0:
         return 0.0
     return actual_dcg / ideal_dcg
-
 
 def average_precision(y_true, y_pred_proba, k=100):
     """Mean Average Precision@K"""
@@ -47,13 +44,11 @@ def average_precision(y_true, y_pred_proba, k=100):
         return 0.0
     return np.mean(precisions)
 
-
 def precision_at_k(y_true, y_pred_proba, k=100):
     """Precision@K"""
     sorted_indices = np.argsort(y_pred_proba)[::-1][:k]
     sorted_relevance = y_true[sorted_indices]
     return np.mean(sorted_relevance > 0)
-
 
 def recall_at_k(y_true, y_pred_proba, k=100):
     """Recall@K"""
@@ -66,7 +61,6 @@ def recall_at_k(y_true, y_pred_proba, k=100):
     if total_relevant == 0:
         return 0.0
     return num_relevant_in_k / total_relevant
-
 
 def evaluate_ranking_metrics(y_true, y_pred_proba, output_dir='validation_results'):
     """
@@ -100,7 +94,6 @@ def evaluate_ranking_metrics(y_true, y_pred_proba, output_dir='validation_result
         results[f'precision_{k}'] = float(prec_k)
         results[f'recall_{k}'] = float(rec_k)
 
-    # Save results
     with open(os.path.join(output_dir, 'ranking_metrics.json'), 'w') as f:
         json.dump(results, f, indent=2)
 

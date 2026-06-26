@@ -23,7 +23,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     """
     Evaluates honeypot detection robustness.
@@ -35,7 +34,6 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     print("PHASE 6: HONEYPOT VALIDATION")
     print("="*100)
 
-    # Preprocessing
     print("\n[6.1] Preprocessing and model training...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -47,7 +45,6 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_aug, y_aug = smote.fit_resample(X_scaled, y)
 
-    # Train ensemble
     xgb_model = xgb.XGBClassifier(
         n_estimators=200, max_depth=6, learning_rate=0.02,
         subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -71,34 +68,27 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     )
     ensemble.fit(X_aug, y_aug)
 
-    # ===== CREATE SYNTHETIC HONEYPOTS =====
     print("\n[6.2] Generating synthetic honeypot profiles...")
 
     honeypot_samples = []
 
-    # Type 1: Keyword Stuffing (all features maxed out)
     keyword_stuff = np.percentile(X_scaled, 95, axis=0)
     honeypot_samples.append(('Keyword_Stuffing', keyword_stuff))
 
-    # Type 2: Flat Profile (all features same value)
     flat_profile = np.ones_like(X_scaled[0]) * np.median(X_scaled)
     honeypot_samples.append(('Flat_Profile', flat_profile))
 
-    # Type 3: Random Noise (extreme values)
     noise_profile = np.random.uniform(-3, 3, X_scaled.shape[1])
     honeypot_samples.append(('Random_Noise', noise_profile))
 
-    # Type 4: Minimal Profile (all zeros)
     minimal = np.zeros_like(X_scaled[0])
     honeypot_samples.append(('Minimal_Profile', minimal))
 
-    # Type 5: Impossible Skills (skill duration > career duration)
     impossible = X_scaled[0].copy()
-    impossible[::2] = np.percentile(X_scaled, 90, axis=0)[::2]  # High skills
-    impossible[1::2] = np.percentile(X_scaled, 10, axis=0)[1::2]  # Low experience
+    impossible[::2] = np.percentile(X_scaled, 90, axis=0)[::2]
+    impossible[1::2] = np.percentile(X_scaled, 10, axis=0)[1::2]
     honeypot_samples.append(('Impossible_Skills', impossible))
 
-    # Generate multiple copies for statistical significance
     num_copies_per_type = 50
     X_honeypot = []
     y_honeypot = []
@@ -106,10 +96,10 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
 
     for honey_type, profile in honeypot_samples:
         for _ in range(num_copies_per_type):
-            # Add small noise
+
             noisy_profile = profile + np.random.normal(0, 0.05, len(profile))
             X_honeypot.append(noisy_profile)
-            y_honeypot.append(0)  # All honeypots should be Class 0 (not relevant)
+            y_honeypot.append(0)
             honeypot_types.append(honey_type)
 
     X_honeypot = np.array(X_honeypot)
@@ -118,21 +108,18 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     print(f"  Generated {len(X_honeypot)} synthetic honeypot profiles")
     print(f"  Types: {len(set(honeypot_types))}")
 
-    # ===== EVALUATE ON HONEYPOTS =====
     print("\n[6.3] Evaluating model on synthetic honeypots...")
 
     y_pred_honeypot = ensemble.predict(X_honeypot)
     y_proba_honeypot = ensemble.predict_proba(X_honeypot)
     confidence_honeypot = np.max(y_proba_honeypot, axis=1)
 
-    # Honeypot detection rate (correctly identified as Class 0)
     honeypot_correct = np.sum(y_pred_honeypot == 0)
     honeypot_detection_rate = honeypot_correct / len(y_honeypot)
 
     print(f"  Honeypot Detection Rate: {honeypot_detection_rate:.2%}")
     print(f"  Correctly Rejected: {honeypot_correct}/{len(y_honeypot)}")
 
-    # ===== ANALYSIS BY HONEYPOT TYPE =====
     print("\n[6.4] Analysis by Honeypot Type:")
 
     honeypot_df = pd.DataFrame({
@@ -162,10 +149,8 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
 
     type_stats_df = pd.DataFrame(type_stats)
 
-    # ===== VISUALIZATION 1: Honeypot Detection by Type =====
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-    # Detection rates
     colors = plt.cm.RdYlGn(type_stats_df['detection_rate'].values)
     axes[0].barh(type_stats_df['type'], type_stats_df['detection_rate'],
                 color=colors, edgecolor='black', linewidth=1.5)
@@ -174,7 +159,6 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     axes[0].set_xlim([0, 1.0])
     axes[0].grid(True, alpha=0.3, axis='x')
 
-    # Confidence distribution
     axes[1].bar(type_stats_df['type'], type_stats_df['avg_confidence'],
                color='#A23B72', alpha=0.7, edgecolor='black', linewidth=1.5)
     axes[1].set_ylabel('Average Confidence', fontsize=11, fontweight='bold')
@@ -189,9 +173,6 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     print(f"\nOK: Saved: phase6_honeypot_analysis.png")
     plt.close()
 
-    # ===== CONFUSION MATRIX =====
-    # Force all four classes so the 4x4 matrix always matches the tick labels,
-    # even when the model never predicts some classes for the honeypots.
     cm = confusion_matrix(y_honeypot, y_pred_honeypot, labels=[0, 1, 2, 3])
 
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -208,10 +189,8 @@ def honeypot_validation(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase6_confusion_matrix.png")
     plt.close()
 
-    # ===== SUMMARY REPORT =====
     print("\n[6.5] Honeypot Validation Summary:")
 
-    # Calculate metrics
     tn = np.sum((y_honeypot == 0) & (y_pred_honeypot == 0))
     fp = np.sum((y_honeypot == 0) & (y_pred_honeypot != 0))
 

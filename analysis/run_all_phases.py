@@ -10,19 +10,12 @@ import json
 import numpy as np
 from datetime import datetime
 
-# ---------------------------------------------------------------------------
-# Global robustness fixes (apply to every phase, since they share these modules)
-# ---------------------------------------------------------------------------
-# 1) Force UTF-8 console so the [OK]/[FAILED]/-> glyphs don't crash on Windows cp1252.
 for _stream in (sys.stdout, sys.stderr):
     try:
         _stream.reconfigure(encoding='utf-8')
     except Exception:
         pass
 
-# 2) Make json.dump tolerate numpy scalars/arrays. Phase modules all do
-#    `import json; json.dump(...)` on the SAME module object, so patching the
-#    shared module here fixes serialization everywhere with no per-file edits.
 def _np_json_default(o):
     if isinstance(o, (np.integer,)):
         return int(o)
@@ -48,7 +41,6 @@ def _patched_dumps(obj, **kw):
 json.dump = _patched_dump
 json.dumps = _patched_dumps
 
-# Add project to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 print("\n" + "="*100)
@@ -59,7 +51,6 @@ print("="*100)
 start_time = datetime.now()
 print(f"\nStarted: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-# ===== LOAD DATA =====
 print("\nSETUP: Loading data...")
 
 try:
@@ -68,8 +59,6 @@ try:
     from sklearn.feature_selection import SelectKBest, f_classif
     from src.shre.stage2_features import FeatureEngineer
 
-    # Load labeled data only. The full candidates.jsonl (487 MB / 100k rows) is
-    # NOT needed here - every labeled record already carries its raw_profile.
     labeled_path = 'labeling/combined_labels.json'
 
     with open(labeled_path, 'r', encoding='utf-8') as f:
@@ -77,7 +66,6 @@ try:
 
     print(f"OK: Loaded {len(labeled)} labeled samples")
 
-    # Extract features
     fe = FeatureEngineer()
     labeled_features = fe.compute_features([item['raw_profile'] for item in labeled])
 
@@ -85,7 +73,6 @@ try:
     y = np.array([item['relevance_score'] for item in labeled])
     feature_names = list(labeled_features[0][1].keys())
 
-    # Clean data
     X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
 
     print(f"OK: Extracted {X.shape[1]} features for {len(y)} samples")
@@ -97,11 +84,9 @@ except Exception as e:
     traceback.print_exc()
     sys.exit(1)
 
-# Create output directory
 output_dir = 'analysis_results'
 os.makedirs(output_dir, exist_ok=True)
 
-# ===== PHASE 1: LEARNING CURVES =====
 print("\n[PHASE 1] Running Learning Curve Analysis...")
 try:
     from analysis.phase1_learning_curves import create_learning_curves
@@ -112,7 +97,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 2: FEATURE IMPORTANCE =====
 print("\n[PHASE 2] Running Feature Importance Analysis...")
 try:
     from analysis.phase2_feature_importance import analyze_feature_importance
@@ -123,7 +107,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 3: SHAP EXPLAINABILITY =====
 print("\n[PHASE 3] Running SHAP Explainability Analysis...")
 try:
     from analysis.phase3_shap_explainability import explain_with_shap
@@ -134,7 +117,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 4: ABLATION STUDY =====
 print("\n[PHASE 4] Running Ablation Study...")
 try:
     from analysis.phase4_ablation_study import run_ablation_study
@@ -145,7 +127,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 5: STABILITY ANALYSIS =====
 print("\n[PHASE 5] Running Stability Analysis...")
 try:
     from analysis.phase5_stability_analysis import stability_analysis
@@ -156,7 +137,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 6: HONEYPOT VALIDATION =====
 print("\n[PHASE 6] Running Honeypot Validation...")
 try:
     from analysis.phase6_honeypot_validation import honeypot_validation
@@ -167,7 +147,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 7: ERROR ANALYSIS =====
 print("\n[PHASE 7] Running Error Analysis...")
 try:
     from analysis.phase7_error_analysis import error_analysis
@@ -178,7 +157,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 8: RANKING VALIDATION =====
 print("\n[PHASE 8] Running Ranking Validation...")
 try:
     from analysis.phase8_ranking_validation import ranking_validation
@@ -189,7 +167,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== PHASE 9: GENERATE COMPETITION REPORT =====
 print("\n[PHASE 9] Generating Competition Report...")
 try:
     from analysis.phase9_competition_report import generate_competition_report
@@ -200,7 +177,6 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ===== SUMMARY =====
 end_time = datetime.now()
 duration = (end_time - start_time).total_seconds() / 60
 

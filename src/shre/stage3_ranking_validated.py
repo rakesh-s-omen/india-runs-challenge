@@ -20,7 +20,6 @@ from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.ensemble import VotingClassifier
 from imblearn.over_sampling import SMOTE, BorderlineSMOTE, ADASYN
 
-
 def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names):
     """
     VALIDATED ENSEMBLE MODEL - COMPETITION GRADE
@@ -44,7 +43,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     print("VALIDATED ENSEMBLE MODEL (Competition Grade)")
     print("="*80)
 
-    # Load and prepare data
     print("\n[STEP 1] Loading and preparing data...")
     if not os.path.exists(labeled_data_path):
         raise FileNotFoundError(f"Labeled data not found at {labeled_data_path}")
@@ -63,7 +61,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     print(f"Loaded {len(y)} samples with {X.shape[1]} features")
     print(f"Class distribution: {dict(zip(*np.unique(y, return_counts=True)))}")
 
-    # CRITICAL FIX #1: Feature selection BEFORE CV (prevents leakage)
     print("\n[STEP 2] Feature selection (before CV)...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -71,7 +68,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     selected_feature_names = [feature_names[i] for i in selected_indices]
     print(f"Selected {len(selected_feature_names)} features (removed {X.shape[1] - len(selected_feature_names)} noisy)")
 
-    # CRITICAL FIX #2: Proper train/val/test split BEFORE any CV
     print("\n[STEP 3] Creating train/val/test split (70/15/15)...")
     X_train_val, X_test, y_train_val, y_test = train_test_split(
         X_selected, y, test_size=0.15, random_state=42, stratify=y
@@ -83,20 +79,17 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     print(f"Train: {len(y_train)} | Val: {len(y_val)} | Test: {len(y_test)}")
     print(f"Train dist: {dict(zip(*np.unique(y_train, return_counts=True)))}")
 
-    # Scale data (before SMOTE)
     print("\n[STEP 4] Normalizing features...")
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_val_scaled = scaler.transform(X_val)
     X_test_scaled = scaler.transform(X_test)
 
-    # CRITICAL FIX #3: SMOTE applied INSIDE CV (no synthetic samples in val/test)
     print("\n[STEP 5] Applying SMOTE (inside CV fold, not on full data)...")
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_train_aug, y_train_aug = smote.fit_resample(X_train_scaled, y_train)
     print(f"After SMOTE: {len(y_train_aug)} samples (was {len(y_train)})")
 
-    # Train ensemble on augmented training data ONLY
     print("\n[STEP 6] Training ensemble on augmented training data...")
     xgb_model = xgb.XGBClassifier(
         n_estimators=300, max_depth=6, learning_rate=0.02,
@@ -123,7 +116,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
 
     ensemble.fit(X_train_aug, y_train_aug)
 
-    # CRITICAL FIX #4: Evaluate on UNSEEN validation and test sets
     print("\n[STEP 7] Evaluating on validation set (unseen, never augmented)...")
     y_val_pred = ensemble.predict(X_val_scaled)
     y_val_proba = ensemble.predict_proba(X_val_scaled)
@@ -161,7 +153,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     print(f"\nClassification Report (Test Set):")
     print(classification_report(y_test, y_test_pred, zero_division=0))
 
-    # Save validated model and metadata
     print("\n[STEP 9] Saving validated model...")
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     models_dir = os.path.join(base_dir, 'models')
@@ -176,7 +167,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     with open(os.path.join(models_dir, 'selector_validated.pkl'), 'wb') as f:
         pickle.dump(selector, f)
 
-    # Save comprehensive metadata
     metadata = {
         'model_type': 'VotingEnsemble (XGBoost + LightGBM + CatBoost)',
         'data_integrity': 'SMOTE applied inside CV folds (no data leakage)',
@@ -203,7 +193,6 @@ def train_and_predict_validated(labeled_data_path, feature_matrix, feature_names
     print(f"\nModel saved to {models_dir}")
     print("="*80 + "\n")
 
-    # Predict on full viable pool using val performance
     print("Predicting on full viable pool...")
     X_pred = np.array([list(fv.values()) for _, fv in feature_matrix])
     X_pred = np.nan_to_num(X_pred, nan=0.0, posinf=0.0, neginf=0.0)

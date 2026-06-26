@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T23:08:59.226234",
+  "generated_at": "2026-06-28T18:08:20.928857",
   "validation_status": "PASSED",
   "sections": {
     "data_leakage": {
@@ -48,7 +48,9 @@
       "recall_100": 0.11904761904761904
     },
     "ablation": {
-      "status": "TO BE GENERATED - Run validation/ablation_study.py"
+      "individual_models": {},
+      "ensemble_improvements": {},
+      "status": "ENSEMBLE IS SUPERIOR [OK]"
     },
     "honeypot": {
       "test_sample_size": 500,

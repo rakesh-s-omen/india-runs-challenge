@@ -10,7 +10,6 @@ import json
 import numpy as np
 from datetime import datetime
 
-# Fix unicode issues on Windows
 if sys.platform == 'win32':
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -36,7 +35,6 @@ def test_stage1_filter():
     print(f"OK: Filtered to {len(viable)} viable candidates")
     print(f"  - Filtered out: {len(candidates) - len(viable)} ({100*(len(candidates)-len(viable))/len(candidates):.1f}%)")
 
-    # Check honeypot detection
     honeypots = sum(1 for c in candidates if ff.is_honeypot(c))
     print(f"  - Honeypots detected: {honeypots}")
 
@@ -58,7 +56,6 @@ def test_stage2_features(candidates):
         print(f"  - Total features: {len(feature_names)}")
         print(f"  - Features: {', '.join(feature_names[:10])}...")
 
-        # Check for NaN/Inf
         feature_matrix = np.array([list(fv.values()) for _, fv in features])
         nan_count = np.isnan(feature_matrix).sum()
         inf_count = np.isinf(feature_matrix).sum()
@@ -77,7 +74,6 @@ def test_stage3_ranking(feature_names):
 
     labeled_path = 'labeling/combined_labels.json'
 
-    # Load candidates for feature matrix
     from src.common.data_loader import load_jsonl
     from src.shre.stage1_filter import FastFilter
     from src.shre.stage2_features import FeatureEngineer
@@ -130,7 +126,6 @@ def test_stage4_submission(candidates, scores):
             print(f"  - Total lines: {len(lines)} (including header)")
             print(f"  - Sample entries: {min(3, len(lines)-1)}")
 
-            # Show sample
             for i, line in enumerate(lines[1:4], 1):
                 cols = line.strip().split(',')
                 if len(cols) >= 2:
@@ -152,7 +147,6 @@ def test_model_accuracy():
     import pickle
     from sklearn.preprocessing import StandardScaler
 
-    # Load model
     model_path = 'models/ensemble_model.pkl'
     scaler_path = 'models/scaler.pkl'
     selector_path = 'models/feature_selector.pkl'
@@ -171,7 +165,6 @@ def test_model_accuracy():
 
         print("OK: Model and selector loaded successfully")
 
-        # Load labeled data and extract features
         with open('labeling/combined_labels.json', 'r') as f:
             labeled = json.load(f)
 
@@ -182,15 +175,12 @@ def test_model_accuracy():
         X = np.array([list(fv.values()) for _, fv in labeled_features])
         y = np.array([item['relevance_score'] for item in labeled])
 
-        # Clean, select and scale
         X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
         X_selected = selector.transform(X)
         X_scaled = scaler.transform(X_selected)
 
-        # Predict
         y_pred = model.predict(X_scaled)
 
-        # Calculate metrics
         acc = accuracy_score(y, y_pred)
 
         print(f"\nOK: Model Accuracy Test Results:")
@@ -203,7 +193,6 @@ def test_model_accuracy():
         for i, row in enumerate(cm):
             print(f"  Class {i}: {row}")
 
-        # Per-class accuracy
         print(f"\nPer-Class Accuracy:")
         for i in range(4):
             mask = y == i
@@ -226,7 +215,7 @@ def test_ctae_fallback():
         run_ctae('data/candidates.jsonl', out_path)
         if os.path.exists(out_path):
             print(f"OK: Fallback CSV generated successfully: {out_path}")
-            # Validate output using python validator
+
             import subprocess
             validator_script = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'validate_submission.py')
             res = subprocess.run([sys.executable, validator_script, out_path], capture_output=True, text=True)
@@ -245,21 +234,16 @@ def main():
     print_header("COMPREHENSIVE SHRE PIPELINE TEST")
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    # Test Stage 1
     viable_candidates = test_stage1_filter()
 
-    # Test Stage 2
     feature_matrix, feature_names = test_stage2_features(viable_candidates)
 
-    # Test Stage 3 & 4
     scores, candidates = test_stage3_ranking(feature_names)
     if scores is not None:
         test_stage4_submission(candidates, scores)
 
-    # Test model accuracy
     test_model_accuracy()
 
-    # Test CTAE fallback
     test_ctae_fallback()
 
     print_header("TEST SUMMARY")

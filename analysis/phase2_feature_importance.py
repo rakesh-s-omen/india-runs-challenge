@@ -24,7 +24,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results'):
     """
     Comprehensive feature importance analysis for all models.
@@ -42,23 +41,19 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print("PHASE 2: FEATURE IMPORTANCE ANALYSIS")
     print("="*100)
 
-    # Feature selection
     print("\n[2.1] Feature Selection...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
     selected_indices = selector.get_support(indices=True)
     selected_features = [feature_names[i] for i in selected_indices]
 
-    # Scaling
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # Apply SMOTE
     print("[2.2] Applying SMOTE augmentation...")
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_aug, y_aug = smote.fit_resample(X_scaled, y)
 
-    # Train individual models
     print("[2.3] Training individual models...")
     xgb_model = xgb.XGBClassifier(
         n_estimators=200, max_depth=6, learning_rate=0.02,
@@ -83,22 +78,18 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
 
     print("[2.4] Extracting feature importances...")
 
-    # Extract gain-based importance
     xgb_importance = dict(zip(selected_features, xgb_model.feature_importances_))
     lgb_importance = dict(zip(selected_features, lgb_model.feature_importances_))
     cb_importance = dict(zip(selected_features, cb_model.feature_importances_))
 
-    # Average importance across models
     avg_importance = {}
     for feat in selected_features:
         avg_importance[feat] = (xgb_importance.get(feat, 0) +
                                lgb_importance.get(feat, 0) +
                                cb_importance.get(feat, 0)) / 3
 
-    # Top 20 features
     top_20 = sorted(avg_importance.items(), key=lambda x: x[1], reverse=True)[:20]
 
-    # Create importance DataFrame
     importance_df = pd.DataFrame({
         'Feature': [f[0] for f in top_20],
         'Avg_Importance': [f[1] for f in top_20],
@@ -107,7 +98,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
         'CB_Importance': [cb_importance.get(f[0], 0) for f in top_20],
     })
 
-    # Normalize importance scores
     importance_df['Normalized_Importance'] = (importance_df['Avg_Importance'] /
                                              importance_df['Avg_Importance'].sum())
     importance_df['Cumulative_Importance'] = importance_df['Normalized_Importance'].cumsum()
@@ -116,16 +106,13 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(importance_df[['Feature', 'Avg_Importance', 'Normalized_Importance',
                         'Cumulative_Importance']].to_string(index=False))
 
-    # Save importance table
     importance_df.to_csv(os.path.join(output_dir, 'feature_importance_table.csv'), index=False)
 
-    # ===== VISUALIZATION 1: Gain Importance Plot =====
     fig, ax = plt.subplots(figsize=(12, 8))
 
     y_pos = np.arange(len(importance_df))
     ax.barh(y_pos, importance_df['Avg_Importance'].values, color='#2E86AB', alpha=0.8)
 
-    # Color gradient by cumulative importance
     for i, (idx, row) in enumerate(importance_df.iterrows()):
         if row['Cumulative_Importance'] <= 0.8:
             ax.get_children()[i].set_color('#2E86AB')
@@ -144,7 +131,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(f"\nOK: Saved: phase2_gain_importance.png")
     plt.close()
 
-    # ===== VISUALIZATION 2: Model Comparison =====
     fig, ax = plt.subplots(figsize=(12, 8))
 
     x = np.arange(len(importance_df))
@@ -166,17 +152,13 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(f"OK: Saved: phase2_model_comparison.png")
     plt.close()
 
-    # ===== PERMUTATION IMPORTANCE =====
     print("\n[2.6] Computing permutation importance (this may take a moment)...")
 
-    # Use ensemble for permutation importance
     ensemble = VotingClassifier(
         estimators=[('xgb', xgb_model), ('lgb', lgb_model), ('cb', cb_model)],
         voting='soft'
     )
 
-    # Compute on validation set. A VotingClassifier wrapping already-fit
-    # estimators is itself NOT fitted, so it must be fit before use.
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     train_idx, val_idx = next(skf.split(X_aug, y_aug))
     X_tr, y_tr = X_aug[train_idx], y_aug[train_idx]
@@ -200,7 +182,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
 
     perm_df.to_csv(os.path.join(output_dir, 'permutation_importance.csv'), index=False)
 
-    # ===== VISUALIZATION 3: Permutation Importance Plot =====
     fig, ax = plt.subplots(figsize=(12, 8))
 
     y_pos = np.arange(len(perm_top20))
@@ -220,10 +201,8 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(f"\nOK: Saved: phase2_permutation_importance.png")
     plt.close()
 
-    # ===== FEATURE CORRELATION HEATMAP =====
     print("\n[2.7] Computing feature correlations...")
 
-    # Use top 20 features for correlation
     top_20_features = [f[0] for f in top_20]
     top_20_indices = [selected_features.index(f) for f in top_20_features]
     X_top20 = X_scaled[:, top_20_indices]
@@ -247,7 +226,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(f"OK: Saved: phase2_correlation_heatmap.png")
     plt.close()
 
-    # ===== REDUNDANCY DETECTION =====
     print("\n[2.8] Analyzing feature redundancy...")
 
     redundancy_report = {
@@ -255,7 +233,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
         'potential_redundant_features': [],
     }
 
-    # Find highly correlated pairs (> 0.95)
     for i in range(len(corr_df)):
         for j in range(i+1, len(corr_df)):
             if abs(corr_df.iloc[i, j]) > 0.95:
@@ -265,7 +242,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
                     'correlation': float(corr_df.iloc[i, j]),
                 })
 
-    # Identify features with low variance
     feature_var = np.var(X_scaled, axis=0)
     low_var_threshold = np.percentile(feature_var, 25)
 
@@ -280,7 +256,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     for feat in low_var_features[:5]:
         print(f"  {feat}")
 
-    # Save redundancy report
     with open(os.path.join(output_dir, 'redundancy_analysis.json'), 'w') as f:
         json.dump({
             'highly_correlated_pairs': redundancy_report['highly_correlated_pairs'],
@@ -288,7 +263,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
             'low_variance_threshold': float(low_var_threshold),
         }, f, indent=2)
 
-    # ===== SUMMARY STATISTICS =====
     print("\n[2.9] Feature Importance Summary:")
     print(f"\n  Top 5 Features by Gain-Based Importance:")
     for i, row in importance_df.head(5).iterrows():
@@ -303,7 +277,6 @@ def analyze_feature_importance(X, y, feature_names, output_dir='analysis_results
     print(f"    {n_features_80} features account for 80% of importance")
     print(f"    That's {n_features_80/len(importance_df)*100:.1f}% of top 20 features")
 
-    # Save analysis summary
     summary = {
         'total_selected_features': len(selected_features),
         'top_20_features': [f[0] for f in top_20],

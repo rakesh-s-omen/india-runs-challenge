@@ -11,7 +11,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
 
-
 def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
     """
     Ablation study comparing individual models vs ensemble.
@@ -31,22 +30,18 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
     print("ABLATION STUDY - Individual vs Ensemble")
     print("="*80)
 
-    # Feature selection
     from sklearn.feature_selection import SelectKBest, f_classif
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
 
-    # Normalize
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # Apply SMOTE
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_aug, y_aug = smote.fit_resample(X_scaled, y)
 
     print(f"\nTraining set: {len(y_aug)} samples (augmented from {len(y)})")
 
-    # Cross-validation setup
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     results = {
         'xgboost_alone': [],
@@ -61,7 +56,6 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
 
         print(f"\nFold {fold}:")
 
-        # XGBoost alone
         xgb_model = xgb.XGBClassifier(
             n_estimators=300, max_depth=6, learning_rate=0.02,
             subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -72,7 +66,6 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
         results['xgboost_alone'].append(xgb_acc)
         print(f"  XGBoost alone:  {xgb_acc:.4f}")
 
-        # LightGBM alone
         lgb_model = lgb.LGBMClassifier(
             n_estimators=300, max_depth=7, learning_rate=0.02, num_leaves=31,
             min_child_samples=20, subsample=0.8, colsample_bytree=0.8,
@@ -83,7 +76,6 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
         results['lightgbm_alone'].append(lgb_acc)
         print(f"  LightGBM alone: {lgb_acc:.4f}")
 
-        # CatBoost alone
         cb_model = CatBoostClassifier(
             iterations=300, max_depth=7, learning_rate=0.02, bootstrap_type='Bernoulli',
             subsample=0.8, colsample_bylevel=0.8, l2_leaf_reg=5,
@@ -94,16 +86,15 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
         results['catboost_alone'].append(cb_acc)
         print(f"  CatBoost alone: {cb_acc:.4f}")
 
-        # Ensemble
         ensemble = VotingClassifier(
             estimators=[('xgb', xgb_model), ('lgb', lgb_model), ('cb', cb_model)],
             voting='soft'
         )
+        ensemble.fit(X_train, y_train)
         ensemble_acc = accuracy_score(y_val, ensemble.predict(X_val))
         results['ensemble'].append(ensemble_acc)
         print(f"  Ensemble:       {ensemble_acc:.4f} <- BEST")
 
-    # Summarize
     print(f"\n" + "="*80)
     print("ABLATION RESULTS (5-Fold Cross-Validation)")
     print("="*80)
@@ -116,7 +107,6 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
 
         print(f"\n{model_name.upper():25s}: {mean_acc:.4f} (+-{std_acc:.4f})")
 
-    # Calculate improvement
     ensemble_mean = summary['ensemble']['mean']
     xgb_mean = summary['xgboost_alone']['mean']
     lgb_mean = summary['lightgbm_alone']['mean']
@@ -129,7 +119,6 @@ def run_ablation_study(X, y, feature_names, output_dir='validation_results'):
     print(f"  vs CatBoost: +{(ensemble_mean - cb_mean)*100:.2f}%")
     print(f"\nOK: Ensemble is {'SIGNIFICANTLY' if ensemble_mean > max(xgb_mean, lgb_mean, cb_mean) else 'MARGINALLY'} better")
 
-    # Save results
     with open(os.path.join(output_dir, 'ablation_study.json'), 'w') as f:
         json.dump({
             'individual_models': summary,

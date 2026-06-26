@@ -46,13 +46,13 @@ def main():
     if len(sys.argv) < 3:
         print("Usage: python src/main.py <input.jsonl> <output.csv>")
         sys.exit(1)
-        
+
     candidates_path = sys.argv[1]
     out_path = sys.argv[2]
-    
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     labeled_path = os.path.join(base_dir, 'labeling', 'combined_labels.json')
-    
+
     try:
         run_shre(candidates_path, labeled_path, out_path)
     except Exception as e:

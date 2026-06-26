@@ -23,7 +23,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     """
     Comprehensive error analysis on test set.
@@ -41,7 +40,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     print("PHASE 7: ERROR ANALYSIS")
     print("="*100)
 
-    # Preprocessing and train/test split
     print("\n[7.1] Preprocessing and splitting data...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -49,16 +47,13 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # Use last 15% as test set
     X_train, X_test, y_train, y_test = train_test_split(
         X_scaled, y, test_size=0.15, random_state=42, stratify=y
     )
 
-    # Train on remaining data
     smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
     X_train_aug, y_train_aug = smote.fit_resample(X_train, y_train)
 
-    # Train ensemble
     print("[7.2] Training ensemble on 85% of data...")
 
     xgb_model = xgb.XGBClassifier(
@@ -84,14 +79,12 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     )
     ensemble.fit(X_train_aug, y_train_aug)
 
-    # Get predictions on test set
     print("[7.3] Evaluating on test set...")
 
     y_pred = ensemble.predict(X_test)
     y_proba = ensemble.predict_proba(X_test)
     confidence = np.max(y_proba, axis=1)
 
-    # ===== ERROR CATEGORIZATION =====
     print("\n[7.4] Analyzing errors...")
 
     errors = y_test != y_pred
@@ -101,16 +94,14 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"  Total Test Samples: {len(y_test)}")
     print(f"  Errors: {num_errors} ({error_rate:.2%})")
 
-    # Build error dataframe
     error_df = pd.DataFrame({
         'true_class': y_test,
         'pred_class': y_pred,
         'confidence': confidence,
         'error': errors,
-        'feature_sum': np.sum(np.abs(X_test), axis=1),  # Feature richness
+        'feature_sum': np.sum(np.abs(X_test), axis=1),
     })
 
-    # ===== CONFUSION DETAILS =====
     print("\n[7.5] Error Breakdown by Class Transition:")
 
     confusion_details = []
@@ -140,7 +131,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
 
     confusion_df = pd.DataFrame(confusion_details)
 
-    # ===== ERROR ANALYSIS BY CLASS =====
     print("\n[7.6] Per-Class Error Analysis:")
 
     class_stats = []
@@ -170,7 +160,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
 
     class_stats_df = pd.DataFrame(class_stats)
 
-    # ===== FEATURE ANALYSIS OF ERRORS =====
     print("\n[7.7] Feature Analysis of Misclassified Samples...")
 
     error_feature_richness = error_df[errors]['feature_sum'].mean()
@@ -180,7 +169,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"  Average Feature Richness (Errors):  {error_feature_richness:.2f}")
     print(f"  Difference: {correct_feature_richness - error_feature_richness:.2f}")
 
-    # ===== VISUALIZATION 1: Confusion Matrix (Errors Only) =====
     from sklearn.metrics import confusion_matrix
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2, 3])
 
@@ -199,10 +187,8 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"\nOK: Saved: phase7_confusion_matrix.png")
     plt.close()
 
-    # ===== VISUALIZATION 2: Error Rate by Class =====
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-    # Error rates
     axes[0].bar(class_stats_df['class'], class_stats_df['error_rate'],
                color='#A23B72', alpha=0.8, edgecolor='black', linewidth=1.5)
     axes[0].set_xlabel('Class', fontsize=11, fontweight='bold')
@@ -211,7 +197,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     axes[0].set_ylim([0, max(class_stats_df['error_rate']) * 1.2])
     axes[0].grid(True, alpha=0.3, axis='y')
 
-    # Confidence comparison
     x_pos = np.arange(len(class_stats_df))
     width = 0.35
 
@@ -243,7 +228,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase7_error_rates.png")
     plt.close()
 
-    # ===== VISUALIZATION 3: Error Flow Sankey (simplified as grouped bar) =====
     if not confusion_df.empty:
         fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -260,7 +244,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
                            for _, row in confusion_df.iterrows()],
                      edgecolor='black', linewidth=1.5)
 
-        # Labels
         labels = [f"C{row['from_class']}->C{row['to_class']}" for _, row in confusion_df.iterrows()]
         ax.set_xticks(x_pos)
         ax.set_xticklabels(labels, rotation=45, ha='right')
@@ -275,7 +258,6 @@ def error_analysis(X, y, feature_names, output_dir='analysis_results'):
         print(f"OK: Saved: phase7_error_flow.png")
         plt.close()
 
-    # ===== SAVE SUMMARY =====
     summary = {
         'test_set_size': len(y_test),
         'total_errors': int(num_errors),

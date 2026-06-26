@@ -24,7 +24,6 @@ warnings.filterwarnings('ignore')
 
 sns.set_style("whitegrid")
 
-
 def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     """
     Repeated Stratified K-Fold Cross-Validation: 10 repetitions x 5 folds.
@@ -41,7 +40,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     print("PHASE 5: STABILITY ANALYSIS")
     print("="*100)
 
-    # Feature selection and preprocessing
     print("\n[5.1] Preprocessing data...")
     selector = SelectKBest(f_classif, k=max(30, int(0.8 * X.shape[1])))
     X_selected = selector.fit_transform(X, y)
@@ -51,7 +49,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_selected)
 
-    # Repeated Stratified K-Fold
     print("[5.2] Running 10 repetitions x 5 folds (50 total evaluations)...\n")
 
     rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=10, random_state=42)
@@ -68,17 +65,15 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     fold_count = 0
 
     for rep_idx, (train_idx, val_idx) in enumerate(rskf.split(X_scaled, y)):
-        fold_in_rep = rep_idx % 5  # Which fold within this repetition
-        rep_num = rep_idx // 5  # Which repetition
+        fold_in_rep = rep_idx % 5
+        rep_num = rep_idx // 5
 
         X_train, X_val = X_scaled[train_idx], X_scaled[val_idx]
         y_train, y_val = y[train_idx], y[val_idx]
 
-        # Apply SMOTE
         smote = SMOTE(k_neighbors=3, random_state=42, sampling_strategy='not majority')
         X_train_aug, y_train_aug = smote.fit_resample(X_train, y_train)
 
-        # Train ensemble
         xgb_model = xgb.XGBClassifier(
             n_estimators=200, max_depth=6, learning_rate=0.02,
             subsample=0.8, colsample_bytree=0.8, objective='multi:softprob',
@@ -96,8 +91,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
             subsample=0.8, bootstrap_type='Bernoulli', random_state=42, verbose=False
         )
 
-        # Fit the ensemble directly (it fits the three base estimators itself);
-        # no need to fit them separately first.
         ensemble = VotingClassifier(
             estimators=[('xgb', xgb_model), ('lgb', lgb_model), ('cb', cb_model)],
             voting='soft'
@@ -106,7 +99,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
 
         y_pred = ensemble.predict(X_val)
 
-        # Metrics
         acc = accuracy_score(y_val, y_pred)
         prec = precision_score(y_val, y_pred, average='macro', zero_division=0)
         rec = recall_score(y_val, y_pred, average='macro', zero_division=0)
@@ -126,7 +118,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
 
     df_metrics = pd.DataFrame(metrics_history)
 
-    # Summary statistics
     summary_stats = {
         'accuracy': {
             'mean': df_metrics['accuracy'].mean(),
@@ -166,7 +157,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
         }
     }
 
-    # Print summary
     print("STABILITY SUMMARY (50 Evaluations: 10 reps x 5 folds):")
     print("="*80)
 
@@ -179,7 +169,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
         print(f"  IQR:         [{stats['q25']:.4f}, {stats['q75']:.4f}]")
         print(f"  CV (%)       {(stats['std']/stats['mean']*100):.2f}%")
 
-    # ===== VISUALIZATION 1: Distribution Plots =====
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
     metrics = ['accuracy', 'precision', 'recall', 'f1_macro']
@@ -188,10 +177,8 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     for idx, (metric, color) in enumerate(zip(metrics, colors)):
         ax = axes[idx // 2, idx % 2]
 
-        # Histogram
         ax.hist(df_metrics[metric], bins=15, alpha=0.7, color=color, edgecolor='black')
 
-        # Add mean and std lines
         mean = df_metrics[metric].mean()
         std = df_metrics[metric].std()
 
@@ -211,7 +198,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"\nOK: Saved: phase5_distributions.png")
     plt.close()
 
-    # ===== VISUALIZATION 2: Box Plots =====
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
     for idx, (metric, color) in enumerate(zip(metrics, colors)):
@@ -228,7 +214,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
         ax.set_xticklabels([''])
         ax.grid(True, alpha=0.3, axis='y')
 
-        # Add statistics text
         mean = df_metrics[metric].mean()
         std = df_metrics[metric].std()
         ax.text(1.3, mean, f'mean={mean:.4f}\nstd={std:.4f}',
@@ -240,7 +225,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase5_boxplots.png")
     plt.close()
 
-    # ===== VISUALIZATION 3: Time Series View =====
     fig, ax = plt.subplots(figsize=(14, 6))
 
     ax.plot(df_metrics['accuracy'], marker='o', markersize=4, linestyle='-',
@@ -248,7 +232,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     ax.plot(df_metrics['f1_macro'], marker='s', markersize=4, linestyle='-',
            alpha=0.6, color='#A23B72', label='Macro F1')
 
-    # Add rolling average
     window = 5
     ax.plot(df_metrics['accuracy'].rolling(window).mean(), linestyle='--',
            linewidth=2, color='#2E86AB', label=f'Accuracy (rolling {window})', alpha=0.9)
@@ -268,7 +251,6 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
     print(f"OK: Saved: phase5_timeseries.png")
     plt.close()
 
-    # ===== STABILITY ASSESSMENT =====
     print("\n[5.4] Stability Assessment:")
 
     cv_accuracy = (summary_stats['accuracy']['std'] / summary_stats['accuracy']['mean']) * 100
@@ -289,10 +271,8 @@ def stability_analysis(X, y, feature_names, output_dir='analysis_results'):
 
     print(f"\n  Model Stability: {stability}")
 
-    # Save CSV
     df_metrics.to_csv(os.path.join(output_dir, 'stability_detailed_results.csv'), index=False)
 
-    # Save summary as JSON
     summary_json = {
         'num_evaluations': 50,
         'num_repetitions': 10,

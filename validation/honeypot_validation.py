@@ -10,7 +10,6 @@ import json
 import os
 import numpy as np
 
-
 def validate_honeypot_detection(candidates, output_dir='validation_results'):
     """
     Validate honeypot detection performance.
@@ -24,7 +23,6 @@ def validate_honeypot_detection(candidates, output_dir='validation_results'):
     from src.shre.stage1_filter import FastFilter
     ff = FastFilter()
 
-    # Test on labeled honeypots and real candidates
     honeypot_detections = 0
     real_detections = 0
     false_positives = 0
@@ -35,25 +33,24 @@ def validate_honeypot_detection(candidates, output_dir='validation_results'):
         'timeline_overlap': 0
     }
 
-    for candidate in candidates[:500]:  # Test on larger sample
+    for candidate in candidates[:500]:
         is_detected = ff.is_honeypot(candidate)
 
-        # Ground truth: check mathematically if there is skill overflow or extreme overlap
         years = candidate.get('profile', {}).get('years_of_experience', 0)
         skills = candidate.get('skills', [])
         history = candidate.get('career_history', [])
-        
+
         max_possible_months = int(years * 12) + 3
-        
+
         has_skill_overflow = False
         for skill in skills:
             if skill.get('duration_months', 0) > max_possible_months * 1.05:
                 has_skill_overflow = True
                 break
-                
+
         total_months = sum(job.get('duration_months', 0) for job in history)
         has_timeline_overlap = total_months > max_possible_months * 1.5
-        
+
         is_actual_honeypot = has_skill_overflow or has_timeline_overlap
 
         if is_detected and is_actual_honeypot:
@@ -71,7 +68,6 @@ def validate_honeypot_detection(candidates, output_dir='validation_results'):
 
     total_tested = 500
 
-    # Calculate metrics
     honeypot_count = honeypot_detections + false_negatives
     real_count = real_detections + false_positives
 
@@ -100,7 +96,6 @@ def validate_honeypot_detection(candidates, output_dir='validation_results'):
     for rule, count in sorted(honeypot_rules_triggered.items(), key=lambda x: x[1], reverse=True):
         print(f"  - {rule}: {count} times")
 
-    # Save validation results
     validation_report = {
         'test_sample_size': total_tested,
         'honeypot_count': int(honeypot_count),
