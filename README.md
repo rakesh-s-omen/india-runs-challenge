@@ -10,73 +10,64 @@ app_file: sandbox/app.py
 pinned: false
 ---
 
-#  Staged Hybrid Ranking Engine (SHRE)
+# India Runs Challenge - Team RETRO
 
-An intelligent, production-ready machine learning candidate ranking engine designed to evaluate and shortlist the **Top 100 Senior AI Engineers** from a large pool of 100k+ candidates. 
+This repository contains the candidate ranking pipeline developed for the India Runs Challenge. The system filters candidate profiles, processes experience trajectories, and ranks the top 100 candidates based on a machine learning ensemble.
 
-This repository implements a **Two-Stage Hybrid Architecture** (Filtering + ML Ranking) featuring an optimized **Voting Ensemble** of three gradient-boosted trees and a pure-Python **CTAE Fallback wrapper** for absolute reliability.
+## Architecture
 
----
+![System Architecture](Architecture-diagram.png)
 
-##  Architecture Overview
+The ranking pipeline consists of:
+1. **Filtering (Stage 1)**: Removes candidates with under 4 years of experience and filters out honeypot resumes with timeline inconsistencies.
+2. **Feature Extraction (Stage 2)**: Extracts 78 signals covering career history, specialized technical skills (LLMs, RAG, Vector DBs), and company types (product vs. consulting).
+3. **ML Ensemble (Stage 3)**: A soft-voting ensemble of XGBoost, LightGBM, and CatBoost models.
+4. **Scoring & Sorting (Stage 4)**: Computes class probabilities and assigns a final ranking with factual, non-hallucinated reasoning.
+5. **Fallback (CTAE)**: A pure-Python fallback mechanism that automatically executes if model or library imports fail.
 
-The system processes candidate data through four distinct stages:
-1. **Stage 1 (Fast Filter):** Screens out candidates with insufficient experience and detects timeline-inconsistent "honeypot" resumes.
-2. **Stage 2 (Feature Engineering):** Computes **78 dense signals** covering career progression, domain specialization (RAG, LLMs, Vector DBs), consulting/product company classification, and candidate platform interactions.
-3. **Stage 3 (Advanced ML Ensemble):** Predicts fit probability using a **Voting Ensemble (XGBoost + LightGBM + CatBoost)** trained on augmented balanced data (resampled to 1,120 profiles using SMOTE + ADASYN).
-4. **Stage 4 (Ranker & Reasoning):** Generates a continuous score based on predicted class probabilities, sorts the pool, and builds data-backed, non-hallucinated reasoning for each of the top 100 candidates.
+## Repository Layout
 
----
+```text
+Mywork/
+├── data/
+│   └── candidates.jsonl             # Input candidate profiles
+├── models/
+│   ├── ensemble_model_validated.pkl # Trained voting ensemble model
+│   ├── scaler_validated.pkl         # Trained feature normalizer
+│   └── selector_validated.pkl       # Feature selector mapping
+├── output/
+│   └── submission.csv               # Final ranked candidate list
+├── src/
+│   ├── main.py                      # Main entrypoint script
+│   ├── common/                      # Configs, dataloader, logging, validation
+│   ├── ctae/                        # Fallback pure-Python ranker
+│   └── shre/                        # Pipeline stages
+├── README.md                        # Project documentation
+├── requirements.txt                 # Dependencies
+└── submission_metadata.yaml         # Team metadata
+```
 
-##  Installation
+## Setup & Running
 
-To set up the environment and install all dependencies:
+### Installation
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-##  How to Run
-
-### 1. Primary Ranking Pipeline
-Run the end-to-end pipeline to process candidates and output the final rankings:
+### Run the Pipeline
+To run the ranking engine and generate the submission file:
 ```bash
 python -m src.main data/candidates.jsonl output/submission.csv
 ```
 
-### 2. Validation & Testing
-To execute the comprehensive test suite (validates data cleanliness, feature counts, model accuracy, and checks both SHRE and CTAE fallback paths):
+### Run Verification Suite
+To verify the pipeline execution and fallback path:
 ```bash
 python test_pipeline.py
 ```
 
-### 3. Interactive Sandbox Demo
-Run the Streamlit application to upload candidate batches and interactively view profiles, scores, and rationales:
+### Launch Interactive App
+To run the Streamlit dashboard app locally:
 ```bash
 streamlit run sandbox/app.py
-```
-
----
-
-##  Performance Summary
-
-* **Cross-Validation Accuracy:** **`96.16%`** (5-Fold Stratified CV)
-* **Macro F1-Score:** **`96.17%`**
-* **Primary Model:** VotingEnsemble (XGBoost + LightGBM + CatBoost)
-* **Fallback Model:** Rule-based CTAE Ranker (Pure Python, zero-dependency)
-
----
-
-##  Repository Structure
-```text
-|-- requirements.txt            # Main project dependencies
-|-- submission_metadata.yaml    # Hackathon metadata
-|-- README.md                   # This file
-|-- src/
-|   |-- main.py                 # Pipeline entry point with SHRE -> CTAE fallback
-|   |-- shre/                   # ML Engine components (Stages 1-4)
-|   |-- ctae/                   # Fallback rule-based engine
-|-- models/                     # Trained models, scalers, selectors & metadata
-|-- sandbox/                    # Streamlit web UI code
 ```
